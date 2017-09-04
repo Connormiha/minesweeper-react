@@ -1,0 +1,24 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "jsx",
+    "json",
+    "styl",
+    "css"
+  ],
+  "transform": {
+    ".+\\.(css|styl)$": "<rootDir>/__tests__/preprocessor-stylus.js"
+  },
+  "testRegex": "/__tests__/.*\\.spec\\.jsx?$",
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "bail": true,
+  "collectCoverageFrom": [
+    "src/**/*.{js,jsx}"
+  ],
+  "setupFiles": [
+    "<rootDir>/__tests__/setup.js"
+  ]
+}

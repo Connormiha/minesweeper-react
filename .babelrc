@@ -1,0 +1,8 @@
+{
+    "plugins": ["transform-flow-strip-types", "transform-react-jsx"],
+    "env": {
+        "testing": {
+            "plugins": ["transform-es2015-modules-commonjs"]
+        }
+    }
+}
