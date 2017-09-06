@@ -5,3 +5,9 @@ module.system.node.resolve_dirname=src
 module.system.node.resolve_dirname=__tests__
 unsafe.enable_getters_and_setters=true
 munge_underscores=true
+
+module.file_ext=.js
+module.file_ext=.jsx
+module.file_ext=.json
+module.file_ext=.css
+module.file_ext=.styl

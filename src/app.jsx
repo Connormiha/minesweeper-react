@@ -8,9 +8,9 @@ import {Provider} from 'react-redux';
 import routes from 'routes';
 
 // Redux
-import * as gameActions from 'flux/game';
-
-store.dispatch(gameActions.init(Object.keys(games)));
+// import * as gameActions from 'flux/game';
+//
+// store.dispatch(gameActions.init(Object.keys(games)));
 
 render(
     (

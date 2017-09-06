@@ -12,12 +12,13 @@
     "url": "git://github.com/Connormiha/minesweeper.git"
   },
   "scripts": {
-    "build": "rm -fr build && NODE_ENV=production webpack",
+    "build": "rm -fr build && npm run createTypesCss && NODE_ENV=production webpack",
     "coverage": "jest --coverage --config jest.json",
     "lint": "gulp lint",
     "precommit": "NODE_ENV=pre_commit npm run types && npm run lint",
     "prepush": "npm run lint && npm run types && npm test",
-    "start": "webpack-dev-server",
+    "createTypesCss": "node helpers/createStylFlow.js",
+    "start": "npm run createTypesCss && webpack-dev-server",
     "test": "jest --no-cache --config jest.json",
     "types": "flow src",
     "upgrade": "yarn upgrade-interactive --exact"
@@ -32,6 +33,8 @@
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babili-webpack-plugin": "0.1.2",
     "css-loader": "0.28.7",
+    "css-modules-flow-types-loader": "0.3.1",
+    "css-modules-flow-types-printer": "0.3.1",
     "csso": "3.1.1",
     "csso-loader": "0.3.1",
     "enzyme": "2.9.1",

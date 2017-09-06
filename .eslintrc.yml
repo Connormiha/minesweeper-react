@@ -23,6 +23,7 @@ env:
 parserOptions:
   sourceType: module
 rules:
+  react/react-in-jsx-scope: off
   object-shorthand: error
   no-lone-blocks: error
   no-lonely-if: error

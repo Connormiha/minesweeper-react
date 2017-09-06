@@ -45,17 +45,19 @@ const CONFIG = {
     }
 }[NODE_ENV];
 
-let cssLoaders = [
-        {
-            loader: 'css-loader',
-            options: {
-                localIdentName: CONFIG.localIdentName,
-                modules: true
+let cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-loader'])
+    .concat(
+        [
+            {
+                loader: 'css-loader',
+                options: {
+                    localIdentName: CONFIG.localIdentName,
+                    modules: true
+                }
             }
-        }
-    ]
+        ]
+    )
     .concat(CONFIG.csso ? 'csso-loader' : [])
-    .concat(NODE_ENV === 'production' ? [] : 'typed-css-modules-loader')
     .concat(
         {
             loader: 'postcss-loader',
