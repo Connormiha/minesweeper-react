@@ -24,6 +24,7 @@ export default (width: number, height: number, bombs: number): CellType[][] => {
                 isBomb,
                 isDead: false,
                 isMarked: false,
+                id: (i * height) + j,
             });
         }
     }

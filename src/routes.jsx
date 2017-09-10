@@ -6,7 +6,11 @@ import PageEntry from 'components/page/Entry';
 export default (
     <Router>
         <Switch>
-            <Route path="/" exact component={PageEntry} />
+            <Route
+                path="/"
+                exact
+                component={PageEntry}
+            />
         </Switch>
     </Router>
 );

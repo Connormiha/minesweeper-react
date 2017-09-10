@@ -1,8 +1,8 @@
 ---
 parser: babel-eslint
 extends:
-- eslint:recommended
-- plugin:react/recommended
+- eslint:all
+- plugin:react/all
 plugins:
 - flowtype
 - react
@@ -25,24 +25,48 @@ parserOptions:
   sourceType: module
 rules:
   react/react-in-jsx-scope: off
-  object-shorthand: error
-  no-lone-blocks: error
-  no-lonely-if: error
-  no-negated-in-lhs: error
-  no-new-object: error
-  no-octal: error
-  no-new-require: error
-  no-new-wrappers: error
-  no-mixed-operators: error
-  no-self-compare: error
-  no-sequences: error
-  no-spaced-func: error
-  no-tabs: error
-  no-undefined: error
-  no-unneeded-ternary: error
-  prefer-arrow-callback: error
-  prefer-const: error
-  space-before-blocks: error
-  semi: error
+  react/prefer-stateless-function: off
+  react/sort-prop-types: off
+  react/no-array-index-key: off
+  react/jsx-sort-props: off
+  quotes:
+  - error
+  - single
+  space-before-function-paren:
+  - error
+  - never
+  padded-blocks:
+  - error
+  - never
+  quote-props:
+  - error
+  - as-needed
+  sort-imports: off
+  id-length: off
+  sort-keys: off
+  no-magic-numbers: off
+  function-paren-newline: off
+  no-extra-parens: off
+  default-case: off
+  no-plusplus: off
+  capitalized-comments: off
+  object-property-newline: off
+  dot-location: off
+  multiline-ternary: off
+  max-statements: off
+  no-ternary: off
+  one-var:
+  - error
+  - never
+  indent:
+  - error
+  - 4
+  - SwitchCase: 1
+  comma-dangle:
+  - error
+  - always-multiline
+  max-len:
+  - error
+  - 140
 globals:
   React: true

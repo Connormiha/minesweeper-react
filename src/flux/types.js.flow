@@ -3,6 +3,7 @@ export type CellType = {|
     isBomb: boolean,
     isDead: boolean,
     isMarked: boolean,
+    id: number,
 |};
 
 export type FieldType = CellType[][];

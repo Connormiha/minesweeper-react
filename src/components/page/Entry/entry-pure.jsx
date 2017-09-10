@@ -14,7 +14,7 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
     render() {
         return (
             <div className="test">
-                Test
+                {'Test'}
                 <Field field={this.props.field} />
             </div>
         );

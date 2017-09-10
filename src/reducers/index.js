@@ -6,5 +6,5 @@ import game from 'flux/game';
 export default combineReducers({
     // message,
     field,
-    game
+    game,
 });

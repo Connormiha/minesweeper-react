@@ -14,7 +14,7 @@ let changedFilesStylus;
 if (PRE_COMMIT) {
     changedFiles = execSync('git diff --cached --name-only --diff-filter=ACM src __tests__', {encoding: 'utf8'});
     changedFiles = changedFiles.split('\n');
-    changedFilesJavascript = changedFiles.filter((item) => /\.jsx?$/.test(item) && !/\.d\.ts$/.test(item));
+    changedFilesJavascript = changedFiles.filter((item) => /\.jsx?$/.test(item));
     changedFilesStylus = changedFiles.filter((item) => /\.styl$/.test(item));
 }
 
@@ -23,7 +23,7 @@ if (PRE_COMMIT) {
  * @desc Check JavaScript validation
  */
 gulp.task('eslint', () =>
-    gulp.src(PRE_COMMIT ? changedFilesJavascript : ['{src,__tests__}/**/*.js'])
+    gulp.src(PRE_COMMIT ? changedFilesJavascript : ['{src,__tests__}/**/*.{js,jsx}'])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError())

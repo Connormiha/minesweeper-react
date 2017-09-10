@@ -34,7 +34,7 @@ const CONFIG = {
     },
     development: {
         csso: false,
-        localIdentName: '[local]--[hash:base64:5]',
+        localIdentName: '[local]',
         watch: true,
         FOLDER: `${__dirname}/deploy`,
         minifyHTML: {

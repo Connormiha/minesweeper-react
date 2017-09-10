@@ -1,4 +1,7 @@
 // @flow
+
+import Cell from 'components/common/Cell';
+
 import type {CellType, FieldType} from 'flux/types';
 
 type PropsType = {
@@ -12,21 +15,23 @@ export default class Field extends React.PureComponent<PropsType> {
         return (
             <div>
                 {
-                    this.props.field.map((item: CellType[], i) => {
-                        return (
+                    this.props.field.map((item: CellType[], i) =>
+                        (
                             <div key={i}>
                                 {
-                                    item.map((cell: CellType, j) => {
-                                        return (
-                                            <span key={j}>
-                                                {cell.isBomb ? '[x]' : '[ ]'}
-                                            </span>
-                                        );
-                                    })
+                                    item.map((cell: CellType) =>
+                                        (
+                                            <Cell
+                                                cell={cell}
+                                                onClick={Function}
+                                                key={cell.id}
+                                            />
+                                        )
+                                    )
                                 }
                             </div>
-                        );
-                    })
+                        )
+                    )
                 }
             </div>
         );

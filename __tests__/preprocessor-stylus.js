@@ -13,5 +13,5 @@ exports.default = new Proxy({}, {
 module.exports = {
     process() {
         return styles;
-    }
+    },
 };
