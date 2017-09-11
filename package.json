@@ -18,9 +18,9 @@
     "precommit": "NODE_ENV=pre_commit npm run types && npm run lint",
     "prepush": "npm run lint && npm run types && npm test",
     "createTypesCss": "node helpers/createStylFlow.js",
-    "start": "npm run createTypesCss && webpack-dev-server",
+    "start": "webpack-dev-server",
     "test": "jest --no-cache --config jest.json",
-    "types": "flow src",
+    "types": "npm run createTypesCss && flow src",
     "upgrade": "yarn upgrade-interactive --exact --latest"
   },
   "devDependencies": {

@@ -28,8 +28,18 @@ export default class Cell extends React.PureComponent<PropsType> {
     }
 
     render() {
+        const {isBomb, isOpened} = this.props.cell;
+
         return (
-            <div className={b('', {open: this.props.cell.isOpened})} />
+            <div
+                className={
+                    b('', {
+                        open: isOpened,
+                        close: !isOpened,
+                        bomb: isOpened && isBomb,
+                    })
+                }
+            />
         );
     }
 }

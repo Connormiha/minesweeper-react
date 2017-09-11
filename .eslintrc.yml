@@ -55,6 +55,12 @@ rules:
   multiline-ternary: off
   max-statements: off
   no-ternary: off
+  init-declarations: off
+  valid-jsdoc: off
+  func-style: off
+  max-params:
+  - error
+  - 5
   one-var:
   - error
   - never

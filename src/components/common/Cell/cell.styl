@@ -3,10 +3,19 @@ $color = #ccc
 .cell
     height: 15px
     width: 15px
+    display: inline-block
 
     &_open
-        &_yes
-            color: red
+        background: red
 
-        &_no
-            color: $color
+    &_close
+        background: $color
+
+    &_bomb
+        &::before
+            content: ''
+            display: block
+            width: inherit
+            height: inherit
+            background: url('/src/assets/images/bomb.svg') no-repeat
+            background-size: contain
