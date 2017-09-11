@@ -3,7 +3,8 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const BabiliPlugin = require("babili-webpack-plugin");
+//const BabiliPlugin = require("babili-webpack-plugin");
+const BabelPlugin = require("babel-webpack-plugin");
 const autoprefixer = require('autoprefixer');
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -188,10 +189,17 @@ module.exports = {
 
 
 if (NODE_ENV === 'production') {
-  module.exports.plugins.push(
-      new BabiliPlugin(null, {
-          comments: false,
-          sourceMap: false
-      })
-  );
+    module.exports.plugins.push(
+        new BabelPlugin({
+            test: /\.js$/,
+            presets: [
+                [
+                    'minify',
+                    {},
+                ],
+            ],
+            plugins: ['transform-react-remove-prop-types'],
+            sourceMaps: false,
+        })
+    );
 }
