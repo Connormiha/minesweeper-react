@@ -3,6 +3,7 @@ export type CellType = {|
     isBomb: boolean,
     isDead: boolean,
     isMarked: boolean,
+    aroundBombCount: number,
     id: number,
 |};
 
@@ -15,4 +16,10 @@ export type GameType = {|
     height: number,
     minesCount: number,
     state: GameState,
+|};
+
+export type FieldFillParams = {|
+    width: number,
+    height: number,
+    minesCount: number,
 |};

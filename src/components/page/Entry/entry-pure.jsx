@@ -5,26 +5,44 @@ import Settings from 'components/common/Settings';
 
 import './entry.styl';
 
-import type {FieldType, GameType} from 'flux/types';
+import type {FieldType, GameType, FieldFillParams} from 'flux/types';
 
 type PropsType = {
     field: FieldType,
     game: GameType,
     onClickCell: (number) => void,
     onChangeFieldWidth: (number) => void,
+    onChangeFieldHeight: (number) => void,
+    onChangeFieldMinesCount: (number) => void,
+    onStartGame: (FieldFillParams) => void,
 };
 
 export default class PageEntryPure extends React.PureComponent<PropsType> {
+    componentWillMount() {
+        const {game, onStartGame} = this.props;
+
+        onStartGame({
+            width: game.width,
+            height: game.height,
+            minesCount: game.minesCount,
+        });
+    }
+
     props: PropsType;
 
     render() {
-        const {game, onChangeFieldWidth} = this.props;
+        const {
+            game, onChangeFieldWidth, onChangeFieldHeight, onChangeFieldMinesCount, onStartGame,
+        } = this.props;
 
         return (
             <div className="test">
                 <Settings
                     game={game}
                     onChangeFieldWidth={onChangeFieldWidth}
+                    onChangeFieldHeight={onChangeFieldHeight}
+                    onChangeFieldMinesCount={onChangeFieldMinesCount}
+                    onStartGame={onStartGame}
                 />
                 <Field
                     field={this.props.field}

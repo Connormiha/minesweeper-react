@@ -60,6 +60,8 @@ rules:
   valid-jsdoc: off
   array-element-newline: off
   no-case-declarations: off
+  array-bracket-newline: off
+  object-curly-newline: off
   func-style: off
   max-params:
   - error
