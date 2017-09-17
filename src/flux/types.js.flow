@@ -7,3 +7,12 @@ export type CellType = {|
 |};
 
 export type FieldType = CellType[][];
+
+export type GameState = 'lost' | 'win' | 'in-progress' | 'not-started';
+
+export type GameType = {|
+    width: number,
+    height: number,
+    minesCount: number,
+    state: GameState,
+|};

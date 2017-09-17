@@ -1,3 +1,5 @@
+// @flow
+
 import {combineReducers} from 'redux';
 // import message from 'flux/message';
 import field from 'flux/field';

@@ -1,10 +1,10 @@
 // @flow
 
-import type {FieldType} from 'flux/types';
+import type {FieldType, GameType} from 'flux/types';
 import fieldGenerator from 'helpers/field-generator';
 
 type SchemaType = {
-    game: any,
+    game: GameType,
     field: FieldType,
 };
 
@@ -13,6 +13,7 @@ const schema: SchemaType = {
         width: 20,
         height: 20,
         minesCount: 30,
+        state: 'not-started',
     },
     field: fieldGenerator(20, 20, 30),
 };

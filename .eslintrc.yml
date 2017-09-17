@@ -80,3 +80,4 @@ rules:
 globals:
   React: true
   bem: true
+  SyntheticInputEvent: true
