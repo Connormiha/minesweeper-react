@@ -1,11 +1,11 @@
 // @flow
 
 import style from './cell.styl';
-import bem from 'helpers/bem';
+import bem from 'bem-css-modules';
 
 import type {CellType} from 'flux/types';
 
-const b = bem(style, 'cell');
+const b = bem(style);
 
 type PropsType = {
     cell: CellType,
@@ -24,7 +24,7 @@ export default class Cell extends React.PureComponent<PropsType> {
     hanldeClick: Function;
 
     hanldeClick() {
-        this.props.onClick(this.props.id);
+        this.props.onClick(this.props.cell.id);
     }
 
     render() {
@@ -32,6 +32,7 @@ export default class Cell extends React.PureComponent<PropsType> {
 
         return (
             <div
+                onClick={isOpened ? null : this.hanldeClick}
                 className={
                     b('', {
                         open: isOpened,

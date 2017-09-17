@@ -156,7 +156,7 @@ module.exports = {
     //devtool: CONFIG.sourceMap,
     plugins: [
         new webpack.ProvidePlugin({
-            React: 'react'
+            React: 'react',
         }),
         new HtmlWebpackPlugin({
             template: './src/index.html',
