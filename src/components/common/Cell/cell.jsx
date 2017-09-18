@@ -28,7 +28,7 @@ export default class Cell extends React.PureComponent<PropsType> {
     }
 
     render() {
-        const {isBomb, isOpened} = this.props.cell;
+        const {isBomb, isOpened, aroundBombCount} = this.props.cell;
 
         return (
             <div
@@ -40,7 +40,9 @@ export default class Cell extends React.PureComponent<PropsType> {
                         bomb: isOpened && isBomb,
                     })
                 }
-            />
+            >
+                {isOpened && aroundBombCount ? aroundBombCount : ''}
+            </div>
         );
     }
 }

@@ -62,6 +62,7 @@ rules:
   no-case-declarations: off
   array-bracket-newline: off
   object-curly-newline: off
+  no-param-reassign: off
   func-style: off
   max-params:
   - error
