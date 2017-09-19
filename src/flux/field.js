@@ -53,7 +53,7 @@ export default (state: FieldType = getDefaultState(), {type, field, id}: any) =>
 
             if (state[row][col].aroundBombCount === 0 && !state[row][col].isBomb) {
                 state = openAllowedSiblings(
-                    state.map((item) => item.slice()),
+                    immutable.asMutable(state).map(immutable.asMutable),
                     row,
                     col,
                 );

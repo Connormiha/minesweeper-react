@@ -41,7 +41,7 @@
     "csso": "3.2.0",
     "csso-loader": "0.3.1",
     "enzyme": "2.9.1",
-    "eslint": "4.7.0",
+    "eslint": "4.7.1",
     "eslint-loader": "1.9.0",
     "eslint-plugin-flowtype": "2.35.1",
     "eslint-plugin-jest": "21.1.0",
