@@ -26,6 +26,8 @@ export default (width: number, height: number, bombs: number): FieldType => {
                 isMarked: false,
                 id: (i * width) + j,
                 aroundBombCount: 0,
+                isFlag: false,
+                isUnknown: false,
             });
         }
     }

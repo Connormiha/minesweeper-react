@@ -1,24 +1,52 @@
-$color = #ccc
+$color = #BDBDBD
+
+$colors =   blue,
+            green,
+            red,
+            red,
+            red,
+            red,
+            red,
+            red,
 
 .cell
-    height: 20px
-    width: 20px
-    border: 1px solid #000
+    height: 30px
+    width: 30px
+    box-sizing: border-box
     display: inline-block
     overflow hidden
     text-align center
+    position: relative
+    font-size: 16px
+    line-height: 28px
+    background: #c0c0c0
 
     &_open
-        background: red
+        box-shadow: none
+        border: 1px solid #ccc
 
     &_close
-        background: $color
+        //background: $color
+        box-shadow: inset 0 0 3px 2px rgba(0, 0, 0, 0.3)
 
     &_bomb
         &::before
             content: ''
-            display: block
-            width: inherit
-            height: inherit
-            background: url('/src/assets/images/bomb.svg') no-repeat
-            background-size: contain
+            position: absolute
+            left: 0
+            right: 0
+            top: 0
+            bottom: 0
+            background: red url('/src/assets/images/bomb.svg') no-repeat center
+            background-size: 20px 20px
+
+    &_flag
+        display: block
+
+    &_unknown
+        display: block
+
+    &_count
+        for $i in 1..8
+            &_{$i}
+                color: $colors[$i - 1]
