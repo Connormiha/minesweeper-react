@@ -1,5 +1,12 @@
 [ignore]
 .*/node_modules/babel*
+.*/node_modules/postcss*
+.*/node_modules/webpack*
+.*/node_modules/gulp*
+.*/node_modules/svgo*
+.*/node_modules/csso*
+.*/node_modules/stylus*
+.*/node_modules/eslint*
 
 [options]
 emoji=true

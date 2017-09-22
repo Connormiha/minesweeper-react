@@ -1,6 +1,6 @@
 // @flow
 
-import type {FieldType, GameType} from 'flux/types';
+import type {FieldType, GameType} from 'flux/types.js.flow';
 
 type SchemaType = {
     game: GameType,

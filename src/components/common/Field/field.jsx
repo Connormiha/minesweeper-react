@@ -3,7 +3,7 @@
 import Cell from 'components/common/Cell';
 import bem from 'bem-css-modules';
 
-import type {CellType, FieldType} from 'flux/types';
+import type {CellType, FieldType} from 'flux/types.js.flow';
 
 import style from './field.styl';
 

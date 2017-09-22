@@ -89,12 +89,12 @@ module.exports = {
     resolve: {
         modules: [
             sourcePath,
-            'node_modules'
+            'node_modules',
         ],
         //modulesDirectories: [nodePath],
-        extensions:         ['.js', '.jsx', '.json'],
+        extensions: ['.js', '.jsx', '.json', '.flow'],
         // This is default param
-        enforceExtension: false
+        enforceExtension: false,
     },
     watch: CONFIG.watch,
     node: {
@@ -104,7 +104,7 @@ module.exports = {
         __filename: false,
         __dirname: false,
         Buffer: false,
-        setImmediate: false
+        setImmediate: false,
     },
     module: {
         noParse: [/\.min\.js$/],
@@ -113,31 +113,31 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: [nodePath],
                 loader: 'eslint-loader',
-                enforce: 'pre'
+                enforce: 'pre',
             },
             {
-                test: /\.jsx?$/,
+                test: /\.(jsx?|flow)$/,
                 exclude: [nodePath],
-                loader: 'babel-loader'
+                loader: 'babel-loader',
             },
             {
                 test: /\.css$/,
-                use: cssLoaders
+                use: cssLoaders,
             },
             {
                 test: /\.styl$/,
-                use: stylusLoaders
+                use: stylusLoaders,
             },
             {
                 test: /\.(png|jpg|gif|ico|woff2?|eot)$/,
-                loader: 'file-loader'
+                loader: 'file-loader',
             },
             {
                 test: /\.svg$/,
                 use: [
                     {
-                        loader: 'file-loader'
-                    }
+                        loader: 'file-loader',
+                    },
                 ].concat(
                     NODE_ENV === 'production'
                     ? {
@@ -161,18 +161,18 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
             inject: 'head',
-            minify: CONFIG.minifyHTML
+            minify: CONFIG.minifyHTML,
         }),
         new ScriptExtHtmlWebpackPlugin({
-            defaultAttribute: 'defer'
+            defaultAttribute: 'defer',
         }),
         new ExtractTextPlugin('app.[hash].css'),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify(NODE_ENV)
-            }
+                NODE_ENV: JSON.stringify(NODE_ENV) || 'development',
+            },
         }),
-        new webpack.optimize.ModuleConcatenationPlugin()
+        new webpack.optimize.ModuleConcatenationPlugin(),
     ],
     devServer: {
         host: 'localhost',
@@ -183,8 +183,8 @@ module.exports = {
         // It suppress everything except error, so it has to be set to false as well
         // to see success build.
         noInfo: false,
-        stats: 'minimal'
-    }
+        stats: 'minimal',
+    },
 };
 
 

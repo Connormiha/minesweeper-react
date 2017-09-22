@@ -5,7 +5,7 @@ import Settings from 'components/common/Settings';
 
 import './entry.styl';
 
-import type {FieldType, GameType, FieldFillParams} from 'flux/types';
+import type {FieldType, GameType, FieldFillParams} from 'flux/types.js.flow';
 
 type PropsType = {
     field: FieldType,

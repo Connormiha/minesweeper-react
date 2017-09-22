@@ -5,7 +5,7 @@ import immutable from 'helpers/immutable';
 import {
     GAME_SET_WIDTH, GAME_SET_HEIGHT, GAME_SET_MINES_COUNT, GAME_START,
 } from 'flux/constants';
-import type {GameType} from 'flux/types';
+import type {GameType} from 'flux/types.js.flow';
 
 const getDefaultState = (): GameType =>
     schema.game;

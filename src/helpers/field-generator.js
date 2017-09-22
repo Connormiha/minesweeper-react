@@ -1,6 +1,6 @@
 // @flow
 
-import type {FieldType} from 'flux/types';
+import type {FieldType} from 'flux/types.js.flow';
 
 export default (width: number, height: number, bombs: number): FieldType => {
     const result = [];

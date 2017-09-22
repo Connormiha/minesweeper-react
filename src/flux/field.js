@@ -4,7 +4,7 @@ import schema from 'reducers/schema';
 import {FIELD_FILL, FIELD_OPEN} from './constants';
 import immutable from 'helpers/immutable';
 import fieldGenerator from 'helpers/field-generator';
-import type {FieldType, FieldFillParams} from 'flux/types';
+import type {FieldType, FieldFillParams} from 'flux/types.js.flow';
 
 const openAllowedSiblings = (state: FieldType, row: number, col: number): FieldType => {
     if (row < 0 || row >= state.length || col < 0 || col >= state[0].length) {

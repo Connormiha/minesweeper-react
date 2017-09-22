@@ -4,7 +4,7 @@ import {bindMethods} from 'helpers/utils';
 import bem from 'bem-css-modules';
 import style from './settings.styl';
 
-import type {GameType, FieldFillParams} from 'flux/types';
+import type {GameType, FieldFillParams} from 'flux/types.js.flow';
 
 const b = bem(style);
 
