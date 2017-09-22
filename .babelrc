@@ -12,7 +12,7 @@
             ]
         },
         "production": {
-            "plugins": ["transform-flow-strip-types", "transform-react-jsx"],
+            "plugins": ["transform-flow-strip-types", "transform-react-jsx", "transform-react-remove-prop-types"],
         }
     }
 }

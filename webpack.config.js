@@ -53,6 +53,7 @@ let cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-load
                 loader: 'css-loader',
                 options: {
                     localIdentName: CONFIG.localIdentName,
+                    root: sourcePath,
                     modules: true
                 }
             }
@@ -135,6 +136,7 @@ module.exports = {
             {
                 test: /\.svg$/,
                 use: [
+                    // https://github.com/webpack-contrib/file-loader/issues/181
                     {
                         loader: 'file-loader',
                     },
