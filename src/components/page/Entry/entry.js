@@ -16,8 +16,12 @@ export default connect(
             dispatch(fieldActions.openCell(id));
         },
 
-        onMarkCell(id: number) {
+        onClickMarkCell(id: number) {
             dispatch(fieldActions.markCell(id));
+        },
+
+        onClickQuickOpenCell(id: number) {
+            dispatch(fieldActions.quickOpen(id));
         },
 
         onChangeFieldWidth(value: number) {

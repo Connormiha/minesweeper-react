@@ -197,7 +197,10 @@ if (NODE_ENV === 'production') {
             presets: [
                 [
                     'minify',
-                    {},
+                    {
+                        removeConsole: true,
+                        removeDebugger: true,
+                    },
                 ],
             ],
             plugins: ['transform-react-remove-prop-types'],

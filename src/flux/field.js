@@ -15,7 +15,7 @@ const openAllowedSiblings = (state: FieldType, row: number, col: number): FieldT
         return state;
     }
 
-    state[row][col] = Object.assign({}, state[row][col], {isOpened: true});
+    state[row][col] = {...state[row][col], isOpened: true};
 
     if (state[row][col].aroundBombCount === 0) {
         openAllowedSiblings(state, row - 1, col);
@@ -146,7 +146,7 @@ export default (state: FieldType = getDefaultState(), {type, field, id}: any) =>
                         return false;
                     }
 
-                    if (cell.isOpened && !cell.isUnknown) {
+                    if (!cell.isOpened && !cell.isUnknown) {
                         return true;
                     }
 
@@ -155,7 +155,15 @@ export default (state: FieldType = getDefaultState(), {type, field, id}: any) =>
 
                 if (countFlagsAround === cell.aroundBombCount) {
                     emptyCells.forEach(([row, col]) => {
-                        state = immutable.setIn(state, [row, col, 'isOpened'], true);
+                        if (state[row][col].aroundBombCount === 0 && !state[row][col].isBomb) {
+                            state = openAllowedSiblings(
+                                immutable.asMutable(state).map(immutable.asMutable),
+                                row,
+                                col,
+                            );
+                        } else {
+                            state = immutable.setIn(state, [row, col, 'isOpened'], true);
+                        }
                     });
                 }
             }
