@@ -1,10 +1,11 @@
 {
     "env": {
         "testing": {
-            "plugins": ["transform-flow-strip-types", "transform-es2015-modules-commonjs"]
+            "plugins": ["syntax-object-rest-spread", "transform-flow-strip-types", "transform-es2015-modules-commonjs"]
         },
         "development": {
             "plugins": [
+                "syntax-object-rest-spread",
                 "syntax-flow",
                 "flow-react-proptypes",
                 "transform-flow-strip-types",
@@ -12,7 +13,7 @@
             ]
         },
         "production": {
-            "plugins": ["transform-flow-strip-types", "transform-react-jsx", "transform-react-remove-prop-types"],
+            "plugins": ["syntax-object-rest-spread", "transform-flow-strip-types", "transform-react-jsx", "transform-react-remove-prop-types"],
         }
     }
 }
