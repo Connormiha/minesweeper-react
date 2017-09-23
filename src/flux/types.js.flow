@@ -2,7 +2,6 @@ export type CellType = {|
     isOpened: boolean,
     isBomb: boolean,
     isDead: boolean,
-    isMarked: boolean,
     isFlag: boolean,
     isUnknown: boolean,
     aroundBombCount: number,

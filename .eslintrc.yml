@@ -64,6 +64,7 @@ rules:
   object-curly-newline: off
   no-param-reassign: off
   func-style: off
+  no-shadow: off
   max-params:
   - error
   - 5

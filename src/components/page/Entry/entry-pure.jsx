@@ -11,6 +11,7 @@ type PropsType = {
     field: FieldType,
     game: GameType,
     onClickCell: (number) => void,
+    onMarkCell: (number) => void,
     onChangeFieldWidth: (number) => void,
     onChangeFieldHeight: (number) => void,
     onChangeFieldMinesCount: (number) => void,
@@ -32,7 +33,8 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
 
     render() {
         const {
-            game, onChangeFieldWidth, onChangeFieldHeight, onChangeFieldMinesCount, onStartGame,
+            game, field, onChangeFieldWidth, onChangeFieldHeight, onChangeFieldMinesCount,
+            onStartGame, onMarkCell, onClickCell,
         } = this.props;
 
         return (
@@ -45,8 +47,9 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
                     onStartGame={onStartGame}
                 />
                 <Field
-                    field={this.props.field}
-                    onClickCell={this.props.onClickCell}
+                    field={field}
+                    onClickCell={onClickCell}
+                    onMarkCell={onMarkCell}
                 />
             </div>
         );

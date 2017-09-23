@@ -11,6 +11,8 @@ const b = bem(style);
 type PropsType = {
     cell: CellType,
     onClick: (number) => void,
+    onClickMark: (number) => void,
+    onClickQuickOpen: (number) => void,
 };
 
 export default class Cell extends React.PureComponent<PropsType> {
@@ -22,8 +24,19 @@ export default class Cell extends React.PureComponent<PropsType> {
 
     props: PropsType;
 
-    hanldeClick() {
-        this.props.onClick(this.props.cell.id);
+    hanldeClick(e: Event) {
+        e.preventDefault();
+        const {isOpened, id} = this.props.cell;
+
+        if (e.ctrlKey || e.altKey) {
+            if (isOpened) {
+                this.props.onClickQuickOpen(id);
+            } else {
+                this.props.onClickMark(id);
+            }
+        } else if (!isOpened) {
+            this.props.onClick(id);
+        }
     }
 
     render() {
@@ -34,7 +47,7 @@ export default class Cell extends React.PureComponent<PropsType> {
             close: !isOpened,
             bomb: isOpened && isBomb,
             flag: isFlag,
-            unknown: isUnknown,
+            question: isUnknown,
         };
 
         if (aroundBombCount && isOpened && !isBomb) {
@@ -43,7 +56,7 @@ export default class Cell extends React.PureComponent<PropsType> {
 
         return (
             <div
-                onClick={isOpened ? null : this.hanldeClick}
+                onClick={this.hanldeClick}
                 className={b('', cssMods)}
             >
                 {isOpened && !isBomb && aroundBombCount ? aroundBombCount : ''}

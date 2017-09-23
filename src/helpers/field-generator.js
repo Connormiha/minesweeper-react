@@ -23,7 +23,6 @@ export default (width: number, height: number, bombs: number): FieldType => {
                 isOpened: false,
                 isBomb,
                 isDead: false,
-                isMarked: false,
                 id: (i * width) + j,
                 aroundBombCount: 0,
                 isFlag: false,

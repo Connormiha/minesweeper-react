@@ -20,6 +20,7 @@ $colors =   blue,
     font-size: 16px
     line-height: 28px
     background: #c0c0c0
+    cursor: default
 
     &_open
         box-shadow: none
@@ -30,6 +31,8 @@ $colors =   blue,
         box-shadow: inset 0 0 3px 2px rgba(0, 0, 0, 0.3)
 
     &_bomb
+    &_flag
+    &_question
         &::before
             content: ''
             position: absolute
@@ -37,14 +40,21 @@ $colors =   blue,
             right: 0
             top: 0
             bottom: 0
-            background: red url(assets/images/bomb.svg) no-repeat center
+            background-repeat: no-repeat
+            background-position: center
             background-size: 20px 20px
 
+    &_bomb
+        &::before
+            background-color: red
+            background-image: url(assets/images/bomb.svg)
     &_flag
-        display: block
+        &::before
+            background-image: url(assets/images/flag.svg)
 
-    &_unknown
-        display: block
+    &_question
+        &::before
+            background-image: url(assets/images/question.svg)
 
     &_count
         for $i in 1..8

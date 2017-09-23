@@ -12,13 +12,14 @@ const b = bem(style);
 type PropsType = {
     field: FieldType,
     onClickCell: (number) => void,
+    onMarkCell: (number) => void,
 };
 
 export default class Field extends React.PureComponent<PropsType> {
     props: PropsType;
 
     render() {
-        const {onClickCell} = this.props;
+        const {onClickCell, onMarkCell} = this.props;
 
         return (
             <div className={b()}>
@@ -35,6 +36,7 @@ export default class Field extends React.PureComponent<PropsType> {
                                             <Cell
                                                 cell={cell}
                                                 onClick={onClickCell}
+                                                onClickMark={onMarkCell}
                                                 key={cell.id}
                                             />
                                         )

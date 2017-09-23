@@ -16,6 +16,10 @@ export default connect(
             dispatch(fieldActions.openCell(id));
         },
 
+        onMarkCell(id: number) {
+            dispatch(fieldActions.markCell(id));
+        },
+
         onChangeFieldWidth(value: number) {
             dispatch(gameActions.updateWidth(value));
         },

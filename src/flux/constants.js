@@ -3,6 +3,8 @@
 // filed
 export const FIELD_FILL = 'FIELD_FILL';
 export const FIELD_OPEN = 'FIELD_OPEN';
+export const FIELD_MARK = 'FIELD_MARK';
+export const FIELD_QUICK_OPEN = 'FIELD_QUICK_OPEN';
 
 // game
 export const GAME_SET_WIDTH = 'GAME_SET_WIDTH';

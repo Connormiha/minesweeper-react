@@ -146,7 +146,7 @@ module.exports = {
                         loader: 'svgo-loader',
                         options: {
                             plugins: [
-                              {removeTitle: true}
+                              {removeTitle: true},
                             ]
                         }
                     }

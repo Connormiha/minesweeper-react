@@ -1,7 +1,7 @@
 {
     "env": {
         "testing": {
-            "plugins": ["transform-es2015-modules-commonjs"]
+            "plugins": ["transform-flow-strip-types", "transform-es2015-modules-commonjs"]
         },
         "development": {
             "plugins": [
