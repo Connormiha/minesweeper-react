@@ -4,6 +4,7 @@ import schema from 'reducers/schema';
 import immutable from 'helpers/immutable';
 import {
     GAME_SET_WIDTH, GAME_SET_HEIGHT, GAME_SET_MINES_COUNT, GAME_START,
+    GAME_RESET,
 } from 'flux/constants';
 import type {GameType} from 'flux/types.js.flow';
 
@@ -22,6 +23,9 @@ export const updateMinesCount = (value: number) =>
 export const start = () =>
     ({type: GAME_START});
 
+export const reset = () =>
+    ({type: GAME_RESET});
+
 export default (state: GameType = getDefaultState(), {type, value}: any) => {
     switch (type) {
         case GAME_SET_WIDTH:
@@ -33,8 +37,11 @@ export default (state: GameType = getDefaultState(), {type, value}: any) => {
         case GAME_SET_MINES_COUNT:
             return immutable.set(state, 'minesCount', value);
 
-        // case GAME_START:
-        //     return immutable.set(state, 'minesCount', value);
+        case GAME_RESET:
+            return immutable.set(state, 'state', 'not-started');
+
+        case GAME_START:
+            return immutable.set(state, 'state', 'in-progress');
     }
 
     return state;

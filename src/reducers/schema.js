@@ -1,10 +1,10 @@
 // @flow
 
-import type {FieldType, GameType} from 'flux/types.js.flow';
+import type {FieldStoreType, GameType} from 'flux/types.js.flow';
 
 type SchemaType = {
     game: GameType,
-    field: FieldType,
+    field: FieldStoreType,
 };
 
 const schema: SchemaType = {
@@ -14,7 +14,12 @@ const schema: SchemaType = {
         minesCount: 30,
         state: 'not-started',
     },
-    field: [],
+    field: {
+        field: [],
+        flagsCount: 0,
+        openedCount: 0,
+        showAllBombs: false,
+    },
 };
 
 export default schema;

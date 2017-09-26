@@ -10,6 +10,7 @@ const b = bem(style);
 
 type PropsType = {
     cell: CellType,
+    isShowBomb: boolean,
     onClick: (number) => void,
     onClickMark: (number) => void,
     onClickQuickOpen: (number) => void,
@@ -19,33 +20,62 @@ export default class Cell extends React.PureComponent<PropsType> {
     constructor(props: PropsType) {
         super(props);
 
-        bindMethods(this, ['hanldeClick']);
+        bindMethods(this, ['hanldeClick', 'handleContextMenu', 'hanldeDoubleClick']);
     }
 
     props: PropsType;
 
     hanldeClick(e: Event) {
         e.preventDefault();
-        const {isOpened, id} = this.props.cell;
+        const {
+            cell: {isOpened, isFlag, isUnknown, id},
+            onClick, onClickMark, onClickQuickOpen,
+        } = this.props;
 
         if (e.ctrlKey || e.altKey) {
             if (isOpened) {
-                this.props.onClickQuickOpen(id);
+                onClickQuickOpen(id);
             } else {
-                this.props.onClickMark(id);
+                onClickMark(id);
             }
-        } else if (!isOpened) {
-            this.props.onClick(id);
+        } else if (!isOpened && !isFlag && !isUnknown) {
+            onClick(id);
+        }
+    }
+
+    hanldeDoubleClick(e: Event) {
+        e.preventDefault();
+        const {
+            cell: {isOpened, aroundBombCount, id},
+            onClickQuickOpen,
+        } = this.props;
+
+        if (isOpened && aroundBombCount) {
+            onClickQuickOpen(id);
+        }
+    }
+
+    handleContextMenu(e: Event) {
+        e.preventDefault();
+
+        const {cell: {isOpened, id}, onClickQuickOpen, onClickMark} = this.props;
+
+        if (isOpened) {
+            onClickQuickOpen(id);
+        } else {
+            onClickMark(id);
         }
     }
 
     render() {
-        const {isBomb, isOpened, isFlag, isUnknown, aroundBombCount} = this.props.cell;
+        const {isBomb, isOpened, isDead, isFlag, isUnknown, aroundBombCount} = this.props.cell;
+        const {isShowBomb} = this.props;
 
         const cssMods: any = {
-            open: isOpened,
-            close: !isOpened,
-            bomb: isOpened && isBomb,
+            open: isOpened || (isShowBomb && isBomb),
+            close: !isOpened && (!isShowBomb || !isBomb),
+            bomb: (isOpened || isShowBomb) && isBomb,
+            dead: isDead,
             flag: isFlag,
             question: isUnknown,
         };
@@ -56,7 +86,9 @@ export default class Cell extends React.PureComponent<PropsType> {
 
         return (
             <div
-                onClick={this.hanldeClick}
+                onClick={isShowBomb ? null : this.hanldeClick}
+                onContextMenu={isShowBomb ? null : this.handleContextMenu}
+                onDoubleClick={isShowBomb ? null : this.hanldeDoubleClick}
                 className={b('', cssMods)}
             >
                 {isOpened && !isBomb && aroundBombCount ? aroundBombCount : ''}

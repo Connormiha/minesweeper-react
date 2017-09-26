@@ -5,10 +5,10 @@ import Settings from 'components/common/Settings';
 
 import './entry.styl';
 
-import type {FieldType, GameType, FieldFillParams} from 'flux/types.js.flow';
+import type {FieldStoreType, GameType, FieldFillParams} from 'flux/types.js.flow';
 
 type PropsType = {
-    field: FieldType,
+    field: FieldStoreType,
     game: GameType,
     onClickCell: (number) => void,
     onClickMarkCell: (number) => void,
@@ -48,7 +48,8 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
                     onStartGame={onStartGame}
                 />
                 <Field
-                    field={field}
+                    field={field.field}
+                    isDead={field.showAllBombs}
                     onClickCell={onClickCell}
                     onClickMarkCell={onClickMarkCell}
                     onClickQuickOpenCell={onClickQuickOpenCell}

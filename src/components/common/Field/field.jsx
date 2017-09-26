@@ -11,6 +11,7 @@ const b = bem(style);
 
 type PropsType = {
     field: FieldType,
+    isDead: boolean,
     onClickCell: (number) => void,
     onClickMarkCell: (number) => void,
     onClickQuickOpenCell: (number) => void,
@@ -20,7 +21,7 @@ export default class Field extends React.PureComponent<PropsType> {
     props: PropsType;
 
     render() {
-        const {onClickCell, onClickMarkCell, onClickQuickOpenCell} = this.props;
+        const {isDead, onClickCell, onClickMarkCell, onClickQuickOpenCell} = this.props;
 
         return (
             <div className={b()}>
@@ -39,6 +40,7 @@ export default class Field extends React.PureComponent<PropsType> {
                                                 onClick={onClickCell}
                                                 onClickMark={onClickMarkCell}
                                                 onClickQuickOpen={onClickQuickOpenCell}
+                                                isShowBomb={isDead}
                                                 key={cell.id}
                                             />
                                         )

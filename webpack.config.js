@@ -118,7 +118,6 @@ module.exports = {
             },
             {
                 test: /\.(jsx?|flow)$/,
-                exclude: [nodePath],
                 loader: 'babel-loader',
             },
             {
