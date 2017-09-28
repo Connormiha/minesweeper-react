@@ -17,6 +17,10 @@ type PropsType = {
     onClickQuickOpenCell: (number) => void,
 };
 
+const handleEvent = (e: SyntheticEvent<*>) => {
+    e.preventDefault();
+};
+
 export default class Field extends React.PureComponent<PropsType> {
     props: PropsType;
 
@@ -24,7 +28,10 @@ export default class Field extends React.PureComponent<PropsType> {
         const {isDead, onClickCell, onClickMarkCell, onClickQuickOpenCell} = this.props;
 
         return (
-            <div className={b('', {locked: isDead})}>
+            <div
+                className={b('', {locked: isDead})}
+                onContextMenu={handleEvent}
+            >
                 {
                     this.props.field.map((item: CellType[], i) =>
                         (
