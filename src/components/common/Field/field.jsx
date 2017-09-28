@@ -24,7 +24,7 @@ export default class Field extends React.PureComponent<PropsType> {
         const {isDead, onClickCell, onClickMarkCell, onClickQuickOpenCell} = this.props;
 
         return (
-            <div className={b()}>
+            <div className={b('', {locked: isDead})}>
                 {
                     this.props.field.map((item: CellType[], i) =>
                         (
