@@ -6,28 +6,32 @@ import immutable from 'helpers/immutable';
 import fieldGenerator from 'helpers/field-generator';
 import type {FieldType, CellType, FieldStoreType, FieldFillParams} from 'flux/types.js.flow';
 
-const openAllowedSiblings = (state: FieldStoreType, row: number, col: number): FieldType => {
-    if (row < 0 || row >= state.field.length || col < 0 || col >= state.field[0].length) {
-        return state;
-    }
+const openAllowedSiblings = (state: FieldStoreType, row: number, col: number): FieldStoreType => {
+    const openFieldCell = (row: number, col: number) => {
+        if (row < 0 || row >= state.field.length || col < 0 || col >= state.field[0].length) {
+            return;
+        }
 
-    if (state.field[row][col].isOpened) {
-        return state;
-    }
+        if (state.field[row][col].isOpened) {
+            return;
+        }
 
-    state.field[row][col] = {...state.field[row][col], isOpened: true};
+        state = immutable.setIn(state, ['field', row, col, 'isOpened'], true);
 
-    if (state.field[row][col].aroundBombCount === 0) {
-        openAllowedSiblings(state, row - 1, col);
-        openAllowedSiblings(state, row + 1, col);
-        openAllowedSiblings(state, row, col - 1);
-        openAllowedSiblings(state, row, col + 1);
+        if (state.field[row][col].aroundBombCount === 0) {
+            openFieldCell(row - 1, col);
+            openFieldCell(row + 1, col);
+            openFieldCell(row, col - 1);
+            openFieldCell(row, col + 1);
 
-        openAllowedSiblings(state, row - 1, col - 1);
-        openAllowedSiblings(state, row + 1, col - 1);
-        openAllowedSiblings(state, row - 1, col + 1);
-        openAllowedSiblings(state, row + 1, col + 1);
-    }
+            openFieldCell(row - 1, col - 1);
+            openFieldCell(row + 1, col - 1);
+            openFieldCell(row - 1, col + 1);
+            openFieldCell(row + 1, col + 1);
+        }
+    };
+
+    openFieldCell(row, col);
 
     return state;
 };
@@ -98,7 +102,7 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
 
             if (cell.aroundBombCount === 0 && !cell.isBomb) {
                 state = openAllowedSiblings(
-                    immutable.asMutable(state, {deep: true}),
+                    state,
                     row,
                     col,
                 );
@@ -180,7 +184,7 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
                     emptyCells.forEach(([row, col]) => {
                         if (state.field[row][col].aroundBombCount === 0 && !state.field[row][col].isBomb) {
                             state = openAllowedSiblings(
-                                immutable.asMutable(state, {deep: true}),
+                                state,
                                 row,
                                 col,
                             );

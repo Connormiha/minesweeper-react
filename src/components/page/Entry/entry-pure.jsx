@@ -2,6 +2,7 @@
 
 import Field from 'components/common/Field';
 import Settings from 'components/common/Settings';
+import GameStatus from 'components/common/game-status';
 
 import './entry.styl';
 
@@ -53,6 +54,10 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
                     onClickCell={onClickCell}
                     onClickMarkCell={onClickMarkCell}
                     onClickQuickOpenCell={onClickQuickOpenCell}
+                />
+                <GameStatus
+                    text="Test"
+                    type="fail"
                 />
             </div>
         );
