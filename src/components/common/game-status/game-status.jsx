@@ -10,15 +10,13 @@ type PropsType = {
     text: string;
     type: string;
 };
-
+b(null, {type: '1'});
 export default class GameStatus extends React.PureComponent<PropsType> {
-    props: PropsType;
-
     render() {
         const {text, type} = this.props;
 
         return (
-            <div className={b(null, {type})}>
+            <div className={b({type})}>
                 {text}
             </div>
         );

@@ -3,8 +3,9 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-//const BabiliPlugin = require("babili-webpack-plugin");
-const BabelPlugin = require("babel-webpack-plugin");
+const UglifyEsPlugin = require('uglify-es-webpack-plugin');
+const CssoWebpackPlugin = require('csso-webpack-plugin').default;
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -15,13 +16,12 @@ const sourcePath = path.join(__dirname, './src/');
 function extractStyle(use) {
     return ExtractTextPlugin.extract({
         fallback: "style-loader",
-        use
+        use,
     });
 }
 
 const CONFIG = {
     production: {
-        csso: true,
         localIdentName: '[hash:base64:5]',
         watch: false,
         FOLDER: `${__dirname}/build`,
@@ -30,20 +30,23 @@ const CONFIG = {
             removeScriptTypeAttributes: true,
             removeStyleLinkTypeAttributes: true,
             removeRedundantAttributes: true,
-            collapseWhitespace: true
-        }
+            collapseWhitespace: true,
+        },
+        alias: {
+            invariant: 'lodash/noop',
+        },
     },
     development: {
-        csso: false,
         localIdentName: '[local]',
         watch: true,
         FOLDER: `${__dirname}/deploy`,
         minifyHTML: {
             removeScriptTypeAttributes: true,
             removeStyleLinkTypeAttributes: true,
-            removeRedundantAttributes: true
-        }
-    }
+            removeRedundantAttributes: true,
+        },
+        alias: {},
+    },
 }[NODE_ENV];
 
 let cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-loader'])
@@ -54,20 +57,19 @@ let cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-load
                 options: {
                     localIdentName: CONFIG.localIdentName,
                     root: sourcePath,
-                    modules: true
-                }
-            }
-        ]
+                    modules: true,
+                },
+            },
+        ],
     )
-    .concat(CONFIG.csso ? 'csso-loader' : [])
     .concat(
         {
             loader: 'postcss-loader',
             options: {
                 plugins: [
-                    autoprefixer({browsers: ['Chrome 59', 'Firefox 54', 'Safari 10']})
-                ]
-            }
+                    autoprefixer({browsers: ['Chrome 64', 'Firefox 55', 'Safari 11']}),
+                ],
+            },
         }
     );
 
@@ -78,7 +80,7 @@ stylusLoaders = extractStyle(stylusLoaders);
 
 module.exports = {
     entry: {
-        app: './src/app.jsx'
+        app: './src/app.jsx',
     },
 
     //context: sourcePath,
@@ -135,26 +137,17 @@ module.exports = {
             {
                 test: /\.svg$/,
                 use: [
-                    // https://github.com/webpack-contrib/file-loader/issues/181
                     {
-                        loader: 'file-loader',
+                        loader: 'svg-url-loader',
                     },
-                ].concat(
-                    NODE_ENV === 'production'
-                    ? {
+                    {
                         loader: 'svgo-loader',
-                        options: {
-                            plugins: [
-                              {removeTitle: true},
-                            ]
-                        }
-                    }
-                    : []
-                )
-            }
+                    },
+                ],
+            },
         ],
     },
-    //devtool: CONFIG.sourceMap,
+    // devtool: CONFIG.sourceMap,
     plugins: [
         new webpack.ProvidePlugin({
             React: 'react',
@@ -190,20 +183,28 @@ module.exports = {
 
 
 if (NODE_ENV === 'production') {
-    module.exports.plugins.push(
-        new BabelPlugin({
-            test: /\.js$/,
-            presets: [
-                [
-                    'minify',
-                    {
-                        removeConsole: true,
-                        removeDebugger: true,
-                    },
-                ],
-            ],
-            plugins: ['transform-react-remove-prop-types'],
-            sourceMaps: false,
-        })
+    module.exports.plugins = module.exports.plugins.concat(
+        new UglifyEsPlugin({
+            ecma: 8,
+            compress: {
+                // https://github.com/mishoo/UglifyJS2/pull/2325
+                unsafe_methods: true,
+                unsafe_arrows: true,
+                drop_console: true,
+                passes: 2,
+                pure_funcs: ['invariant'],
+            },
+        }),
+        new CssoWebpackPlugin(),
+        new PreloadWebpackPlugin({
+            rel: 'preload',
+            as(entry) {
+                if (/\.css$/.test(entry)) return 'style';
+                if (/\.woff$/.test(entry)) return 'font';
+                if (/\.(svg|png)$/.test(entry)) return 'image';
+
+                return 'script';
+            },
+        }),
     );
 }
