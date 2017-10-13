@@ -1,5 +1,6 @@
 // @flow
 
+import React from 'react';
 import Field from 'components/common/Field';
 import Settings from 'components/common/Settings';
 import GameStatus from 'components/common/game-status';

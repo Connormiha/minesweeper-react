@@ -1,6 +1,7 @@
 // @flow
 
 import style from './cell.styl';
+import React from 'react';
 import {bindMethods} from 'helpers/utils';
 import bem from 'bem-css-modules';
 

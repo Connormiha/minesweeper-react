@@ -2,7 +2,7 @@
 
 import schema from 'reducers/schema';
 import {FIELD_FILL, FIELD_OPEN, FIELD_MARK, FIELD_QUICK_OPEN} from './constants';
-import immutable from 'helpers/immutable';
+import immutable from 'immutability-helper';
 import fieldGenerator from 'helpers/field-generator';
 import type {FieldType, CellType, FieldStoreType, FieldFillParams} from 'flux/types.js.flow';
 
@@ -16,7 +16,18 @@ const openAllowedSiblings = (state: FieldStoreType, row: number, col: number): F
             return;
         }
 
-        state = immutable.setIn(state, ['field', row, col, 'isOpened'], true);
+        state = immutable(
+            state,
+            {
+                field: {
+                    [row]: {
+                        [col]: {
+                            isOpened: {$set: true},
+                        },
+                    },
+                },
+            },
+        );
 
         if (state.field[row][col].aroundBombCount === 0) {
             openFieldCell(row - 1, col);
@@ -46,23 +57,36 @@ const getCellParams = (state: FieldStoreType, id: number): [number, number, numb
 };
 
 const openCellState = (state: FieldStoreType, row: number, col: number): FieldType => {
-    state = immutable.setIn(
+    state = immutable(
         state,
-        ['field', row, col, 'isOpened'],
-        true,
+        {
+            field: {
+                [row]: {
+                    [col]: {
+                        isOpened: {$set: true},
+                    },
+                },
+            },
+        },
     );
 
     if (state.field[row][col].isBomb) {
-        state = immutable.setIn(
+        state = immutable(
             state,
-            ['field', row, col, 'isDead'],
-            true,
+            {
+                field: {
+                    [row]: {
+                        [col]: {
+                            isDead: {$set: true},
+                        },
+                    },
+                },
+            },
         );
 
-        state = immutable.set(
+        state = immutable(
             state,
-            'showAllBombs',
-            true,
+            {showAllBombs: {$set: true}},
         );
     }
 
@@ -116,10 +140,17 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
             [width, row, col, cell] = getCellParams(state, id);
 
             if (cell.isUnknown) {
-                return immutable.setIn(
+                return immutable(
                     state,
-                    ['field', row, col, 'isUnknown'],
-                    false,
+                    {
+                        field: {
+                            [row]: {
+                                [col]: {
+                                    isUnknown: {$set: false},
+                                },
+                            },
+                        },
+                    },
                 );
             } else if (cell.isFlag) {
                 state = immutable.setIn(
@@ -128,17 +159,44 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
                     true,
                 );
 
-                return immutable.setIn(
+                state = immutable(
                     state,
-                    ['field', row, col, 'isFlag'],
-                    false,
+                    {
+                        field: {
+                            [row]: {
+                                [col]: {
+                                    isUnknown: {$set: true},
+                                },
+                            },
+                        },
+                    },
+                );
+
+                return immutable(
+                    state,
+                    {
+                        field: {
+                            [row]: {
+                                [col]: {
+                                    isFlag: {$set: false},
+                                },
+                            },
+                        },
+                    },
                 );
             }
 
-            return immutable.setIn(
+            return immutable(
                 state,
-                ['field', row, col, 'isFlag'],
-                true,
+                {
+                    field: {
+                        [row]: {
+                            [col]: {
+                                isFlag: {$set: true},
+                            },
+                        },
+                    },
+                },
             );
 
         case FIELD_QUICK_OPEN:

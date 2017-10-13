@@ -1,5 +1,6 @@
 // @flow
 
+import React from 'react';
 import {bindMethods} from 'helpers/utils';
 import bem from 'bem-css-modules';
 import style from './settings.styl';

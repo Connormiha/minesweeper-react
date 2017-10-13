@@ -1,5 +1,6 @@
 // @flow
 
+import React from 'react';
 import Cell from 'components/common/Cell';
 import bem from 'bem-css-modules';
 
