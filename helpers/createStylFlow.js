@@ -9,17 +9,19 @@ files = files.split('\n');
 
 files.forEach((file) => {
     readFile(file, {encoding: 'utf8'}, (err, data) => {
+        if (err) {
+            throw err;
+        }
+
         stylus.render(data, {compress: true, filename: file.replace(/^.*\//, '')}, (err, css) => {
-            if (err) throw err;
+            if (err) {
+                throw err;
+            }
 
             const CSSNames = (css.match(/[:'"]?[#.][\w-]+/g) || [])
-                .filter((item) => !/^[:'"]/.test(item));
+                .filter((item) => !(/^[:'"]/).test(item));
 
-            const tokens = CSSNames.reduce((acc, next) => {
-                acc[next.slice(1)] = true;
-
-                return acc;
-            }, {});
+            const tokens = CSSNames.map((item) => item.slice(1));
 
             writeFile(`${file}.flow`, cssModulesFlowTypesPrinter(tokens), {}, () => {});
         });

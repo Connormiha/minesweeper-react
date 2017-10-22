@@ -14,5 +14,5 @@ render(
             {routes}
         </Provider>
     ),
-    document.querySelector('#app')
+    (document.querySelector('#app'): any),
 );
