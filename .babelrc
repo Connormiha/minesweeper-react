@@ -7,7 +7,7 @@
         "development": {
             "plugins": [
                 "syntax-flow",
-                "flow-react-proptypes",
+                // "flow-react-proptypes",
                 "transform-flow-strip-types",
                 "transform-react-jsx"
             ]

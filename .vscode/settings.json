@@ -1,0 +1,7 @@
+{
+    "typescript.tsdk": null,
+    "javascript.validate.enable": false,
+    "files.associations": {
+        "*.flow": "javascript"
+    }
+}

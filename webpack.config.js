@@ -113,12 +113,6 @@ module.exports = {
         noParse: [/\.min\.js$/],
         rules: [
             {
-                test: /\.jsx?$/,
-                exclude: [nodePath],
-                loader: 'eslint-loader',
-                enforce: 'pre',
-            },
-            {
                 test: /\.(jsx?|flow)$/,
                 loader: 'babel-loader',
             },

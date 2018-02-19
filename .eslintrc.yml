@@ -30,6 +30,7 @@ rules:
   react/no-array-index-key: off
   react/jsx-sort-props: off
   react/jsx-handler-names: off
+  react/destructuring-assignment: off
   quotes:
   - error
   - single
