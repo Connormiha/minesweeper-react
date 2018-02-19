@@ -14,7 +14,7 @@
   "scripts": {
     "build": "rm -fr build && NODE_ENV=production webpack",
     "coverage": "jest --coverage --config jest.json",
-    "lint": "gulp lint",
+    "lint": "node lint.js",
     "precommit": "NODE_ENV=pre_commit npm run types && npm run lint",
     "prepush": "npm run lint && npm run types && npm test",
     "createTypesCss": "node helpers/createStylFlow.js",
@@ -53,9 +53,6 @@
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.7",
     "flow-bin": "0.66.0",
-    "gulp": "3.9.1",
-    "gulp-eslint": "4.0.2",
-    "gulp-stylint": "4.0.1",
     "html-webpack-plugin": "2.30.1",
     "http-server": "0.11.1",
     "husky": "0.14.3",
