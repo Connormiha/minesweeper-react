@@ -23,7 +23,11 @@ files.forEach((file) => {
 
             const tokens = CSSNames.map((item) => item.slice(1));
 
-            writeFile(`${file}.flow`, cssModulesFlowTypesPrinter(tokens), {}, () => {});
+            writeFile(`${file}.flow`, cssModulesFlowTypesPrinter(tokens), {}, (err) => {
+                if (err) {
+                    console.log(`${file}.flow`, err);
+                }
+            });
         });
     });
 });
