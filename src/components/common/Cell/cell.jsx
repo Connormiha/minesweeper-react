@@ -26,7 +26,7 @@ export default class Cell extends React.PureComponent<PropsType> {
 
     props: PropsType;
 
-    hanldeClick(e: SyntheticEvent<*>) {
+    hanldeClick(e: SyntheticMouseEvent<HTMLDivElement>) {
         e.preventDefault();
         const {
             cell: {isOpened, isFlag, isUnknown, id},
@@ -44,12 +44,12 @@ export default class Cell extends React.PureComponent<PropsType> {
         }
     }
 
-    hanldeDoubleClick(e: SyntheticEvent<*>) {
+    hanldeDoubleClick(e: SyntheticMouseEvent<HTMLDivElement>) {
         e.preventDefault();
         this.quickOpen();
     }
 
-    handleContextMenu(e: SyntheticEvent<*>) {
+    handleContextMenu(e: SyntheticMouseEvent<HTMLDivElement>) {
         e.preventDefault();
 
         const {cell: {isOpened, id}, onClickQuickOpen, onClickMark} = this.props;
@@ -61,9 +61,10 @@ export default class Cell extends React.PureComponent<PropsType> {
         }
     }
 
-    handleMouseUp(e: SyntheticEvent<*>) {
+    handleMouseUp(e: SyntheticMouseEvent<HTMLDivElement>) {
         e.preventDefault();
 
+        // $FlowFixMe
         if (e.nativeEvent.which === 2) {
             this.quickOpen();
         }

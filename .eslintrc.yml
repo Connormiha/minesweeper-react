@@ -87,4 +87,5 @@ globals:
   React: true
   bem: true
   SyntheticInputEvent: true
+  SyntheticMouseEvent: true
   SyntheticEvent: true

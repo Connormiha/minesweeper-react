@@ -24,21 +24,19 @@ export default class Settings extends React.PureComponent<PropsType> {
         bindMethods(this, ['hanldeChangeWidth', 'hanldeChangeHeight', 'hanldeChangeMinesCount', 'handleSubmit']);
     }
 
-    props: PropsType;
-
-    hanldeChangeWidth(e: any) {
+    hanldeChangeWidth(e: SyntheticInputEvent<HTMLInputElement>) {
         this.props.onChangeFieldWidth(parseInt(e.target.value, 10));
     }
 
-    hanldeChangeHeight(e: any) {
+    hanldeChangeHeight(e: SyntheticInputEvent<HTMLInputElement>) {
         this.props.onChangeFieldHeight(parseInt(e.target.value, 10));
     }
 
-    hanldeChangeMinesCount(e: any) {
+    hanldeChangeMinesCount(e: SyntheticInputEvent<HTMLInputElement>) {
         this.props.onChangeFieldMinesCount(parseInt(e.target.value, 10));
     }
 
-    handleSubmit(e: any) {
+    handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
         const {game: {width, height, minesCount}, onStartGame} = this.props;
 
         e.preventDefault();
