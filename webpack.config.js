@@ -8,17 +8,10 @@ const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require('path');
 const nodePath = path.join(__dirname, './node_modules');
 const sourcePath = path.join(__dirname, './src/');
-
-function extractStyle(use) {
-    return ExtractTextPlugin.extract({
-        fallback: "style-loader",
-        use,
-    });
-}
 
 const CONFIG = {
     production: {
@@ -51,6 +44,7 @@ const CONFIG = {
 
 let cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-loader'])
     .concat(
+        MiniCssExtractPlugin.loader,
         [
             {
                 loader: 'css-loader',
@@ -75,9 +69,6 @@ let cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-load
 
 let stylusLoaders = cssLoaders.concat('stylus-loader');
 
-cssLoaders = extractStyle(cssLoaders);
-stylusLoaders = extractStyle(stylusLoaders);
-
 module.exports = {
     entry: {
         app: './src/app.jsx',
@@ -98,6 +89,34 @@ module.exports = {
         extensions: ['.js', '.jsx', '.json', '.flow'],
         // This is default param
         enforceExtension: false,
+    },
+    mode: NODE_ENV,
+    optimization: {
+        minimizer: [
+            new UglifyEsPlugin({
+                ecma: 8,
+                compress: {
+                    // https://github.com/mishoo/UglifyJS2/pull/2325
+                    unsafe_methods: true,
+                    unsafe_arrows: true,
+                    drop_console: true,
+                    passes: 2,
+                    pure_funcs: ['invariant'],
+                },
+            }),
+            new CssoWebpackPlugin(),
+            // Waiting for support Webpack 4
+            // new PreloadWebpackPlugin({
+            //     rel: 'preload',
+            //     as(entry) {
+            //         if (/\.css$/.test(entry)) return 'style';
+            //         if (/\.woff$/.test(entry)) return 'font';
+            //         if (/\.(svg|png)$/.test(entry)) return 'image';
+    
+            //         return 'script';
+            //     },
+            // }),
+        ],
     },
     watch: CONFIG.watch,
     node: {
@@ -154,13 +173,15 @@ module.exports = {
         new ScriptExtHtmlWebpackPlugin({
             defaultAttribute: 'defer',
         }),
-        new ExtractTextPlugin('app.[hash].css'),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(NODE_ENV) || 'development',
             },
         }),
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        new MiniCssExtractPlugin({
+            filename: 'app.[hash].css',
+            chunkFilename: 'app.[hash].css',
+        }),
     ],
     devServer: {
         host: 'localhost',
@@ -174,31 +195,3 @@ module.exports = {
         stats: 'minimal',
     },
 };
-
-
-if (NODE_ENV === 'production') {
-    module.exports.plugins = module.exports.plugins.concat(
-        new UglifyEsPlugin({
-            ecma: 8,
-            compress: {
-                // https://github.com/mishoo/UglifyJS2/pull/2325
-                unsafe_methods: true,
-                unsafe_arrows: true,
-                drop_console: true,
-                passes: 2,
-                pure_funcs: ['invariant'],
-            },
-        }),
-        new CssoWebpackPlugin(),
-        new PreloadWebpackPlugin({
-            rel: 'preload',
-            as(entry) {
-                if (/\.css$/.test(entry)) return 'style';
-                if (/\.woff$/.test(entry)) return 'font';
-                if (/\.(svg|png)$/.test(entry)) return 'image';
-
-                return 'script';
-            },
-        }),
-    );
-}
