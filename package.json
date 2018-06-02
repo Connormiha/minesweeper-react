@@ -25,7 +25,7 @@
     "upgrade": "yarn upgrade-interactive --ignore-engines --exact --latest"
   },
   "devDependencies": {
-    "autoprefixer": "8.5.2",
+    "autoprefixer": "8.6.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.3",
     "babel-jest": "23.0.1",
@@ -82,7 +82,7 @@
     "uglify-es-webpack-plugin": "0.10.0",
     "url-loader": "1.0.1",
     "webpack": "4.10.2",
-    "webpack-cli": "2.1.5",
+    "webpack-cli": "3.0.1",
     "webpack-dev-server": "3.1.4",
     "webpack-sources": "1.1.0"
   }
