@@ -169,34 +169,19 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
                     },
                 );
             } else if (cell.isFlag) {
-                state = immutable.setIn(
-                    state,
-                    ['field', row, col, 'isUnknown'],
-                    true,
-                );
-
-                state = immutable(
-                    state,
-                    {
-                        field: {
-                            [row]: {
-                                [col]: {
-                                    isUnknown: {$set: true},
-                                },
-                            },
-                        },
-                    },
-                );
-
                 return immutable(
                     state,
                     {
                         field: {
                             [row]: {
                                 [col]: {
+                                    isUnknown: {$set: true},
                                     isFlag: {$set: false},
                                 },
                             },
+                        },
+                        flagsCount: {
+                            $set: state.flagsCount - 1,
                         },
                     },
                 );
@@ -211,6 +196,9 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
                                 isFlag: {$set: true},
                             },
                         },
+                    },
+                    flagsCount: {
+                        $set: state.flagsCount + 1,
                     },
                 },
             );

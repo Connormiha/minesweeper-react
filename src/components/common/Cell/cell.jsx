@@ -9,13 +9,13 @@ import type {CellType} from 'flux/types.js.flow';
 
 const b = bem(style);
 
-type PropsType = {
+type PropsType = {|
     cell: CellType,
     isShowBomb: boolean,
     onClick: (number) => void,
     onClickMark: (number) => void,
     onClickQuickOpen: (number) => void,
-};
+|};
 
 export default class Cell extends React.PureComponent<PropsType> {
     constructor(props: PropsType) {
@@ -23,8 +23,6 @@ export default class Cell extends React.PureComponent<PropsType> {
 
         bindMethods(this, ['hanldeClick', 'handleContextMenu', 'hanldeDoubleClick', 'handleMouseUp']);
     }
-
-    props: PropsType;
 
     hanldeClick(e: SyntheticMouseEvent<HTMLDivElement>) {
         e.preventDefault();

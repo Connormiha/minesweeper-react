@@ -7,10 +7,10 @@ import bem from 'bem-css-modules';
 
 const b = bem(style);
 
-type PropsType = {
+type PropsType = {|
     text: string;
     type: string;
-};
+|};
 
 export default class GameStatus extends React.PureComponent<PropsType> {
     render() {

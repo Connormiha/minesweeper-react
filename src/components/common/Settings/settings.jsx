@@ -9,13 +9,13 @@ import type {GameType, FieldFillParams} from 'flux/types.js.flow';
 
 const b = bem(style);
 
-type PropsType = {
+type PropsType = {|
     game: GameType,
     onChangeFieldWidth: (number) => void,
     onChangeFieldHeight: (number) => void,
     onChangeFieldMinesCount: (number) => void,
     onStartGame: (FieldFillParams) => void,
-};
+|};
 
 export default class Settings extends React.PureComponent<PropsType> {
     constructor(props: PropsType) {

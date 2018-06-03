@@ -2,8 +2,8 @@
 
 import type {FieldType, CellType} from 'flux/types';
 
-const createCell = (isBomb: boolean, id: number): CellType => {
-    return {
+const createCell = (isBomb: boolean, id: number): CellType =>
+    ({
         isOpened: false,
         isBomb,
         isDead: false,
@@ -11,8 +11,7 @@ const createCell = (isBomb: boolean, id: number): CellType => {
         aroundBombCount: 0,
         isFlag: false,
         isUnknown: false,
-    };
-};
+    });
 
 export const fieldGeneratorEmpty = (width: number, height: number): FieldType => {
     const result = [];
