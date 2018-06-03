@@ -1,9 +1,15 @@
 // @flow
 
 import schema from 'reducers/schema';
-import {FIELD_FILL, FIELD_OPEN, FIELD_MARK, FIELD_QUICK_OPEN} from './constants';
+import {
+    FIELD_FILL,
+    FIELD_FILL_EMPTY,
+    FIELD_OPEN,
+    FIELD_MARK,
+    FIELD_QUICK_OPEN,
+} from './constants';
 import immutable from 'immutability-helper';
-import fieldGenerator from 'helpers/field-generator';
+import fieldGenerator, {fieldGeneratorEmpty} from 'helpers/field-generator';
 import type {FieldType, CellType, FieldStoreType, FieldFillParams} from 'flux/types.js.flow';
 
 const openAllowedSiblings = (state: FieldStoreType, row: number, col: number): FieldStoreType => {
@@ -102,8 +108,11 @@ export const markCell = (id: number) =>
 export const quickOpen = (id: number) =>
     ({type: FIELD_QUICK_OPEN, id});
 
-export const fill = (field: FieldFillParams) =>
-    ({type: FIELD_FILL, field});
+export const fill = (field: FieldFillParams, id: number) =>
+    ({type: FIELD_FILL, field, id});
+
+export const fillEmpty = (field: FieldFillParams) =>
+    ({type: FIELD_FILL_EMPTY, field});
 
 const getDefaultState = (): FieldType =>
     schema.field;
@@ -118,7 +127,14 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
         case FIELD_FILL:
             return {
                 ...schema.field,
-                field: fieldGenerator(field.width, field.height, field.minesCount),
+                isGenerated: true,
+                field: fieldGenerator(field.width, field.height, field.minesCount, id),
+            };
+
+        case FIELD_FILL_EMPTY:
+            return {
+                ...schema.field,
+                field: fieldGeneratorEmpty(field.width, field.height),
             };
 
         case FIELD_OPEN:

@@ -10,12 +10,13 @@ export type CellType = {|
 
 export type FieldType = CellType[][];
 
-export type FieldStoreType = {
+export type FieldStoreType = {|
     field: FieldType,
     flagsCount: number,
     openedCount: number,
     showAllBombs: boolean,
-};
+    isGenerated: boolean,
+|};
 
 export type GameState = 'fail' | 'win' | 'in-progress' | 'not-started';
 

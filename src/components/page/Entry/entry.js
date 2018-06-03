@@ -16,6 +16,15 @@ export default connect(
             dispatch(fieldActions.openCell(id));
         },
 
+        onFirstClickCell(id: number, field: FieldFillParams) {
+            dispatch(
+                batchActions([
+                    fieldActions.fill(field, id),
+                    fieldActions.openCell(id),
+                ])
+            );
+        },
+
         onClickMarkCell(id: number) {
             dispatch(fieldActions.markCell(id));
         },
@@ -39,7 +48,7 @@ export default connect(
         onStartGame(field: FieldFillParams) {
             dispatch(
                 batchActions([
-                    fieldActions.fill(field),
+                    fieldActions.fillEmpty(field),
                     gameActions.start(),
                 ])
             );

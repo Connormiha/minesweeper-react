@@ -1,8 +1,34 @@
 // @flow
 
-import type {FieldType} from 'flux/types.js.flow';
+import type {FieldType, CellType} from 'flux/types';
 
-export default (width: number, height: number, bombs: number): FieldType => {
+const createCell = (isBomb: boolean, id: number): CellType => {
+    return {
+        isOpened: false,
+        isBomb,
+        isDead: false,
+        id,
+        aroundBombCount: 0,
+        isFlag: false,
+        isUnknown: false,
+    };
+};
+
+export const fieldGeneratorEmpty = (width: number, height: number): FieldType => {
+    const result = [];
+
+    for (let i = 0; i < height; i++) {
+        result.push([]);
+
+        for (let j = 0; j < width; j++) {
+            result[i].push(createCell(false, (i * width) + j));
+        }
+    }
+
+    return result;
+};
+
+export default (width: number, height: number, bombs: number, safeId: number): FieldType => {
     const result = [];
     let totalCells = width * height;
     let totalBombs = bombs;
@@ -11,7 +37,8 @@ export default (width: number, height: number, bombs: number): FieldType => {
         result.push([]);
 
         for (let j = 0; j < width; j++) {
-            const isBomb = totalBombs > 0 && Math.round(Math.random() * totalCells) < totalBombs;
+            const id = (i * width) + j;
+            const isBomb = id !== safeId && totalBombs > 0 && Math.round(Math.random() * totalCells) < totalBombs;
 
             totalCells--;
 
@@ -19,15 +46,7 @@ export default (width: number, height: number, bombs: number): FieldType => {
                 totalBombs--;
             }
 
-            result[i].push({
-                isOpened: false,
-                isBomb,
-                isDead: false,
-                id: (i * width) + j,
-                aroundBombCount: 0,
-                isFlag: false,
-                isUnknown: false,
-            });
+            result[i].push(createCell(isBomb, id));
         }
     }
 

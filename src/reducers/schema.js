@@ -1,11 +1,11 @@
 // @flow
 
-import type {FieldStoreType, GameType} from 'flux/types.js.flow';
+import type {FieldStoreType, GameType} from 'flux/types';
 
-type SchemaType = {
+type SchemaType = {|
     game: GameType,
     field: FieldStoreType,
-};
+|};
 
 const schema: SchemaType = {
     game: {
@@ -19,6 +19,7 @@ const schema: SchemaType = {
         flagsCount: 0,
         openedCount: 0,
         showAllBombs: false,
+        isGenerated: false,
     },
 };
 

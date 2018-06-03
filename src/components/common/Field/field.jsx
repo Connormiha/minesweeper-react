@@ -10,23 +10,21 @@ import style from './field.styl';
 
 const b = bem(style);
 
-type PropsType = {
+type PropsType = {|
     field: FieldType,
     isDead: boolean,
     onClickCell: (number) => void,
     onClickMarkCell: (number) => void,
     onClickQuickOpenCell: (number) => void,
-};
+|};
 
 const handleEvent = (e: SyntheticEvent<*>) => {
     e.preventDefault();
 };
 
 export default class Field extends React.PureComponent<PropsType> {
-    props: PropsType;
-
     render() {
-        const {isDead, onClickCell, onClickMarkCell, onClickQuickOpenCell} = this.props;
+        const {field, isDead, onClickCell, onClickMarkCell, onClickQuickOpenCell} = this.props;
 
         return (
             <div
@@ -34,7 +32,7 @@ export default class Field extends React.PureComponent<PropsType> {
                 onContextMenu={handleEvent}
             >
                 {
-                    this.props.field.map((item: CellType[], i) =>
+                    field.map((item: CellType[], i) =>
                         (
                             <div
                                 key={i}

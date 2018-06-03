@@ -29,6 +29,7 @@ rules:
   react/sort-prop-types: off
   react/no-array-index-key: off
   react/jsx-sort-props: off
+  react/sort-comp: off
   react/jsx-handler-names: off
   react/destructuring-assignment: off
   implicit-arrow-linebreak: off
@@ -44,6 +45,7 @@ rules:
   quote-props:
   - error
   - as-needed
+  no-underscore-dangle: off
   sort-imports: off
   id-length: off
   sort-keys: off
