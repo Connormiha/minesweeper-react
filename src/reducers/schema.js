@@ -18,6 +18,7 @@ const schema: SchemaType = {
         field: [],
         flagsCount: 0,
         openedCount: 0,
+        rowWidth: 0,
         showAllBombs: false,
         isGenerated: false,
     },

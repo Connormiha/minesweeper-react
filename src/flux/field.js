@@ -1,6 +1,7 @@
 // @flow
 
 import schema from 'reducers/schema';
+import {getCellNeighbours} from 'helpers/utils';
 import {
     FIELD_FILL,
     FIELD_FILL_EMPTY,
@@ -10,15 +11,14 @@ import {
 } from './constants';
 import immutable from 'immutability-helper';
 import fieldGenerator, {fieldGeneratorEmpty} from 'helpers/field-generator';
-import type {FieldType, CellType, FieldStoreType, FieldFillParams} from 'flux/types.js.flow';
+import type {FieldType, FieldStoreType, FieldFillParams} from 'flux/types';
 
-const openAllowedSiblings = (state: FieldStoreType, row: number, col: number): FieldStoreType => {
-    const openFieldCell = (row: number, col: number) => {
-        if (row < 0 || row >= state.field.length || col < 0 || col >= state.field[0].length) {
-            return;
-        }
+const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType => {
+    const width = state.rowWidth;
+    const size = state.field.length;
 
-        if (state.field[row][col].isOpened) {
+    const openFieldCell = (id: number) => {
+        if (state.field[id].isOpened) {
             return;
         }
 
@@ -26,65 +26,44 @@ const openAllowedSiblings = (state: FieldStoreType, row: number, col: number): F
             state,
             {
                 field: {
-                    [row]: {
-                        [col]: {
-                            isOpened: {$set: true},
-                        },
+                    [id]: {
+                        isOpened: {$set: true},
                     },
                 },
             },
         );
 
-        if (state.field[row][col].aroundBombCount === 0) {
-            openFieldCell(row - 1, col);
-            openFieldCell(row + 1, col);
-            openFieldCell(row, col - 1);
-            openFieldCell(row, col + 1);
-
-            openFieldCell(row - 1, col - 1);
-            openFieldCell(row + 1, col - 1);
-            openFieldCell(row - 1, col + 1);
-            openFieldCell(row + 1, col + 1);
+        if (state.field[id].aroundBombCount === 0) {
+            for (const i of getCellNeighbours(id, width, size)) {
+                openFieldCell(i);
+            }
         }
     };
 
-    openFieldCell(row, col);
+    openFieldCell(id);
 
     return state;
 };
 
-const getCellParams = (state: FieldStoreType, id: number): [number, number, number, CellType] => {
-    const width = state.field[0].length;
-    const row = parseInt(id / width, 10);
-    const col = id % width;
-    const cell = state.field[row][col];
-
-    return [width, row, col, cell];
-};
-
-const openCellState = (state: FieldStoreType, row: number, col: number): FieldType => {
+const openCellState = (state: FieldStoreType, id: number): FieldType => {
     state = immutable(
         state,
         {
             field: {
-                [row]: {
-                    [col]: {
-                        isOpened: {$set: true},
-                    },
+                [id]: {
+                    isOpened: {$set: true},
                 },
             },
         },
     );
 
-    if (state.field[row][col].isBomb) {
+    if (state.field[id].isBomb) {
         state = immutable(
             state,
             {
                 field: {
-                    [row]: {
-                        [col]: {
-                            isDead: {$set: true},
-                        },
+                    [id]: {
+                        isDead: {$set: true},
                     },
                 },
             },
@@ -118,9 +97,6 @@ const getDefaultState = (): FieldType =>
     schema.field;
 
 export default (state: FieldStoreType = getDefaultState(), {type, field, id}: any) => {
-    let width;
-    let row;
-    let col;
     let cell;
 
     switch (type) {
@@ -129,41 +105,37 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
                 ...schema.field,
                 isGenerated: true,
                 field: fieldGenerator(field.width, field.height, field.minesCount, id),
+                rowWidth: field.width,
             };
 
         case FIELD_FILL_EMPTY:
             return {
                 ...schema.field,
                 field: fieldGeneratorEmpty(field.width, field.height),
+                rowWidth: field.width,
             };
 
         case FIELD_OPEN:
-            [width, row, col, cell] = getCellParams(state, id);
+            cell = state.field[id];
 
             if (cell.aroundBombCount === 0 && !cell.isBomb) {
-                state = openAllowedSiblings(
-                    state,
-                    row,
-                    col,
-                );
+                state = openAllowedSiblings(state, id);
             } else {
-                state = openCellState(state, row, col);
+                state = openCellState(state, id);
             }
 
             return state;
 
         case FIELD_MARK:
-            [width, row, col, cell] = getCellParams(state, id);
+            cell = state.field[id];
 
             if (cell.isUnknown) {
                 return immutable(
                     state,
                     {
                         field: {
-                            [row]: {
-                                [col]: {
-                                    isUnknown: {$set: false},
-                                },
+                            [id]: {
+                                isUnknown: {$set: false},
                             },
                         },
                     },
@@ -173,11 +145,9 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
                     state,
                     {
                         field: {
-                            [row]: {
-                                [col]: {
-                                    isUnknown: {$set: true},
-                                    isFlag: {$set: false},
-                                },
+                            [id]: {
+                                isUnknown: {$set: true},
+                                isFlag: {$set: false},
                             },
                         },
                         flagsCount: {
@@ -191,10 +161,8 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
                 state,
                 {
                     field: {
-                        [row]: {
-                            [col]: {
-                                isFlag: {$set: true},
-                            },
+                        [id]: {
+                            isFlag: {$set: true},
                         },
                     },
                     flagsCount: {
@@ -204,30 +172,14 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
             );
 
         case FIELD_QUICK_OPEN:
-            [width, row, col, cell] = getCellParams(state, id);
+            cell = state.field[id];
 
             if (cell.isOpened && cell.aroundBombCount) {
                 let countFlagsAround = 0;
+                const neighbours = getCellNeighbours(id, state.rowWidth, state.field.length);
 
-                const emptyCells = [
-                    [row, col + 1],
-                    [row, col - 1],
-                    [row - 1, col + 1],
-                    [row - 1, col],
-                    [row - 1, col - 1],
-                    [row + 1, col + 1],
-                    [row + 1, col],
-                    [row + 1, col - 1],
-                ].filter(([row, col]) => {
-                    if (row < 0 || row >= state.field.length) {
-                        return false;
-                    }
-
-                    if (col < 0 || col >= width) {
-                        return false;
-                    }
-
-                    const cell = state.field[row][col];
+                const emptyCells = neighbours.filter((id) => {
+                    const cell = state.field[id];
 
                     if (cell.isFlag) {
                         countFlagsAround++;
@@ -243,15 +195,11 @@ export default (state: FieldStoreType = getDefaultState(), {type, field, id}: an
                 });
 
                 if (countFlagsAround === cell.aroundBombCount) {
-                    emptyCells.forEach(([row, col]) => {
-                        if (state.field[row][col].aroundBombCount === 0 && !state.field[row][col].isBomb) {
-                            state = openAllowedSiblings(
-                                state,
-                                row,
-                                col,
-                            );
+                    emptyCells.forEach((id) => {
+                        if (state.field[id].aroundBombCount === 0 && !state.field[id].isBomb) {
+                            state = openAllowedSiblings(state, id);
                         } else {
-                            state = openCellState(state, row, col);
+                            state = openCellState(state, id);
                         }
                     });
                 }

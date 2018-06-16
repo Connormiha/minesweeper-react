@@ -8,12 +8,13 @@ export type CellType = {|
     id: number,
 |};
 
-export type FieldType = CellType[][];
+export type FieldType = CellType[];
 
 export type FieldStoreType = {|
     field: FieldType,
     flagsCount: number,
     openedCount: number,
+    rowWidth: number,
     showAllBombs: boolean,
     isGenerated: boolean,
 |};

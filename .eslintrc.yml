@@ -54,6 +54,9 @@ rules:
   no-extra-parens: off
   default-case: off
   no-plusplus: off
+  no-continue: off
+  no-inline-comments: off
+  line-comment-position: off
   capitalized-comments: off
   object-property-newline: off
   dot-location: off

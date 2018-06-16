@@ -1,5 +1,6 @@
 // @flow
 
+import {getCellNeighbours} from 'helpers/utils';
 import type {FieldType, CellType} from 'flux/types';
 
 const createCell = (isBomb: boolean, id: number): CellType =>
@@ -15,13 +16,10 @@ const createCell = (isBomb: boolean, id: number): CellType =>
 
 export const fieldGeneratorEmpty = (width: number, height: number): FieldType => {
     const result = [];
+    const end = height * width;
 
-    for (let i = 0; i < height; i++) {
-        result.push([]);
-
-        for (let j = 0; j < width; j++) {
-            result[i].push(createCell(false, (i * width) + j));
-        }
+    for (let i = 0; i < end; i++) {
+        result.push(createCell(false, i));
     }
 
     return result;
@@ -29,53 +27,36 @@ export const fieldGeneratorEmpty = (width: number, height: number): FieldType =>
 
 export default (width: number, height: number, bombs: number, safeId: number): FieldType => {
     const result = [];
-    let totalCells = width * height;
+    const end = height * width;
+    let totalCells = end;
     let totalBombs = bombs;
 
-    for (let i = 0; i < height; i++) {
-        result.push([]);
+    for (let i = 0; i < end; i++) {
+        const id = i;
+        const isBomb = id !== safeId && totalBombs > 0 && Math.round(Math.random() * totalCells) < totalBombs;
 
-        for (let j = 0; j < width; j++) {
-            const id = (i * width) + j;
-            const isBomb = id !== safeId && totalBombs > 0 && Math.round(Math.random() * totalCells) < totalBombs;
+        totalCells--;
 
-            totalCells--;
-
-            if (isBomb) {
-                totalBombs--;
-            }
-
-            result[i].push(createCell(isBomb, id));
+        if (isBomb) {
+            totalBombs--;
         }
+
+        result.push(createCell(isBomb, id));
     }
 
-    for (let i = 0; i < height; i++) {
-        for (let j = 0; j < width; j++) {
-            let aroundBombCount = 0;
+    for (let i = 0; i < end; i++) {
+        let aroundBombCount = 0;
+        const neighbours = getCellNeighbours(i, width, end);
 
-            [
-                [i, j - 1],
-                [i, j + 1],
-                [i + 1, j],
-                [i + 1, j - 1],
-                [i + 1, j + 1],
-                [i - 1, j],
-                [i - 1, j - 1],
-                [i - 1, j + 1],
-            ].forEach((item) => {
-                if (item[0] < 0 || item[0] >= height || item[1] < 0 || item[1] >= width) {
-                    return;
-                }
+        for (const item of neighbours) {
+            const cell = result[item];
 
-                const cell = result[item[0]][item[1]];
-
-                if (cell.isBomb) {
-                    aroundBombCount++;
-                }
-            });
-
-            result[i][j].aroundBombCount = aroundBombCount;
+            if (cell.isBomb) {
+                aroundBombCount++;
+            }
         }
+
+        result[i].aroundBombCount = aroundBombCount;
     }
 
     return result;

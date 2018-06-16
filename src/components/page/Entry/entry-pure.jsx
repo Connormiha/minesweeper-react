@@ -74,6 +74,7 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
                 />
                 <Field
                     field={field.field}
+                    rowWidth={field.rowWidth}
                     isDead={field.showAllBombs}
                     onClickCell={this._handleCellClick}
                     onClickMarkCell={onClickMarkCell}

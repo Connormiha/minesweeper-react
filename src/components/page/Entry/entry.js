@@ -7,7 +7,7 @@ import * as gameActions from 'flux/game';
 import {batchActions} from 'redux-batched-actions';
 
 import type {Dispatch} from 'redux';
-import type {FieldFillParams} from 'flux/types.js.flow';
+import type {FieldFillParams} from 'flux/types';
 
 export default connect(
     ({game, field}) => ({game, field}),
