@@ -19,18 +19,98 @@ type PropsType = {|
     onClickQuickOpenCell: (number) => void,
 |};
 
-const handleEvent = (e: SyntheticEvent<*>) => {
-    e.preventDefault();
-};
-
 export default class Field extends React.PureComponent<PropsType> {
+    _handleEvent: (e: SyntheticMouseEvent<HTMLDivElement>) => void;
+
+    constructor(props: PropsType) {
+        super(props);
+        this._handleEvent = this.handleEvent.bind(this);
+    }
+
+    handleEvent(e: SyntheticMouseEvent<HTMLDivElement>) {
+        e.preventDefault();
+        const current = e.target;
+
+        if (!(current instanceof HTMLDivElement)) {
+            return;
+        }
+
+        const id = parseInt(current.dataset.id, 10);
+
+        switch (e.type) {
+            case 'click':
+                this.hanldeClick(e, id);
+                break;
+            case 'dblclick':
+                this.hanldeDoubleClick(id);
+                break;
+            case 'contextmenu':
+                this.handleContextMenu(id);
+                break;
+            case 'mouseup':
+                this.handleMouseUp(e, id);
+                break;
+        }
+    }
+
+    hanldeClick(e: SyntheticMouseEvent<HTMLDivElement>, id: number) {
+        const {
+            onClickCell, onClickMarkCell, onClickQuickOpenCell,
+        } = this.props;
+        const {isOpened, isFlag, isUnknown} = this.getCell(id);
+
+        if (e.ctrlKey || e.altKey) {
+            if (isOpened) {
+                onClickQuickOpenCell(id);
+            } else {
+                onClickMarkCell(id);
+            }
+        } else if (!isOpened && !isFlag && !isUnknown) {
+            onClickCell(id);
+        }
+    }
+
+    hanldeDoubleClick(id: number) {
+        this.quickOpen(id);
+    }
+
+    handleContextMenu(id: number) {
+        if (this.getCell(id).isOpened) {
+            this.props.onClickQuickOpenCell(id);
+        } else {
+            this.props.onClickMarkCell(id);
+        }
+    }
+
+    handleMouseUp(e: SyntheticMouseEvent<HTMLDivElement>, id: number) {
+        // $FlowFixMe
+        if (e.nativeEvent.which === 2) {
+            this.quickOpen(id);
+        }
+    }
+
+    quickOpen(id: number) {
+        const {isOpened, aroundBombCount} = this.getCell(id);
+
+        if (isOpened && aroundBombCount) {
+            this.props.onClickQuickOpenCell(id);
+        }
+    }
+
+    getCell(id: number): Cell {
+        return this.props.field[id];
+    }
+
     render() {
-        const {field, rowWidth, isDead, onClickCell, onClickMarkCell, onClickQuickOpenCell} = this.props;
+        const {field, rowWidth, isDead} = this.props;
 
         return (
-            <div
+            <section
                 className={b('', {locked: isDead})}
-                onContextMenu={handleEvent}
+                onClick={this._handleEvent}
+                onContextMenu={this._handleEvent}
+                onDoubleClick={this._handleEvent}
+                onMouseUp={this._handleEvent}
                 style={{width: `${rowWidth * 34}px`}}
             >
                 {
@@ -38,16 +118,13 @@ export default class Field extends React.PureComponent<PropsType> {
                         (
                             <Cell
                                 cell={cell}
-                                onClick={onClickCell}
-                                onClickMark={onClickMarkCell}
-                                onClickQuickOpen={onClickQuickOpenCell}
                                 isShowBomb={isDead}
                                 key={cell.id}
                             />
                         )
                     )
                 }
-            </div>
+            </section>
         );
     }
 }
