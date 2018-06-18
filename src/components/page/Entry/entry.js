@@ -45,6 +45,10 @@ export default connect(
             dispatch(gameActions.updateMinesCount(value));
         },
 
+        onFinishGame(isFail: boolean) {
+            dispatch(gameActions.finish(isFail));
+        },
+
         onStartGame(field: FieldFillParams) {
             dispatch(
                 batchActions([

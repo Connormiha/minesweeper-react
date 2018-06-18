@@ -7,18 +7,31 @@ import bem from 'bem-css-modules';
 
 const b = bem(style);
 
+const MINES_LEFT_TEXT = 'Mines left: ';
+
 type PropsType = {|
-    text: string;
-    type: string;
+    minesLeftCount: number,
+    state: 'fail' | 'win' | 'in-progress' | 'not-started';
 |};
 
 export default class GameStatus extends React.PureComponent<PropsType> {
+    renderMinesCount() {
+        return (
+            <span>
+                <span>
+                    {MINES_LEFT_TEXT}
+                </span>
+                {this.props.minesLeftCount}
+            </span>
+        );
+    }
+
     render() {
-        const {text, type} = this.props;
+        const {state} = this.props;
 
         return (
-            <div className={b({type})}>
-                {text}
+            <div className={b('', {state})}>
+                {this.renderMinesCount()}
             </div>
         );
     }

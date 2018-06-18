@@ -58,7 +58,7 @@ const openCellState = (state: FieldStoreType, id: number): FieldType => {
     );
 
     if (state.field[id].isBomb) {
-        state = immutable(
+        return immutable(
             state,
             {
                 field: {
@@ -66,12 +66,8 @@ const openCellState = (state: FieldStoreType, id: number): FieldType => {
                         isDead: {$set: true},
                     },
                 },
+                showAllBombs: {$set: true},
             },
-        );
-
-        state = immutable(
-            state,
-            {showAllBombs: {$set: true}},
         );
     }
 

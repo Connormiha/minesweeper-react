@@ -7,7 +7,7 @@ import GameStatus from 'components/common/game-status';
 
 import './entry.styl';
 
-import type {FieldStoreType, GameType, FieldFillParams} from 'flux/types.js.flow';
+import type {FieldStoreType, GameType, GameState, FieldFillParams} from 'flux/types.js.flow';
 
 type PropsType = {|
     field: FieldStoreType,
@@ -20,6 +20,7 @@ type PropsType = {|
     onChangeFieldHeight: (number) => void,
     onChangeFieldMinesCount: (number) => void,
     onStartGame: (FieldFillParams) => void,
+    onFinishGame: (state: GameState) => void,
 |};
 
 export default class PageEntryPure extends React.PureComponent<PropsType> {
@@ -38,6 +39,12 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
             height: game.height,
             minesCount: game.minesCount,
         });
+    }
+
+    componentDidUpdate(nextProps: PropsType) {
+        if (nextProps.field.showAllBombs && !this.props.field.showAllBombs) {
+            this.props.onFinishGame(true);
+        }
     }
 
     handleCellClick(id: number) {
@@ -81,8 +88,8 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
                     onClickQuickOpenCell={onClickQuickOpenCell}
                 />
                 <GameStatus
-                    text="Test"
-                    type="fail"
+                    minesLeftCount={game.minesCount - field.flagsCount}
+                    state={game.state}
                 />
             </div>
         );

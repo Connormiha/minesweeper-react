@@ -101,8 +101,22 @@ export default class Field extends React.PureComponent<PropsType> {
         return this.props.field[id];
     }
 
+    renderCells() {
+        const {field, isDead} = this.props;
+
+        return field.map((cell: CellType) =>
+            (
+                <Cell
+                    cell={cell}
+                    isShowBomb={isDead}
+                    key={cell.id}
+                />
+            )
+        );
+    }
+
     render() {
-        const {field, rowWidth, isDead} = this.props;
+        const {rowWidth, isDead} = this.props;
 
         return (
             <section
@@ -113,17 +127,7 @@ export default class Field extends React.PureComponent<PropsType> {
                 onMouseUp={this._handleEvent}
                 style={{width: `${rowWidth * 34}px`}}
             >
-                {
-                    field.map((cell: CellType) =>
-                        (
-                            <Cell
-                                cell={cell}
-                                isShowBomb={isDead}
-                                key={cell.id}
-                            />
-                        )
-                    )
-                }
+                {this.renderCells()}
             </section>
         );
     }

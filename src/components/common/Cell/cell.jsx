@@ -33,7 +33,7 @@ export default class Cell extends React.PureComponent<PropsType> {
 
         return (
             <div
-                className={b('', cssMods)}
+                className={b(cssMods)}
                 data-id={id}
             >
                 {isOpened && !isBomb && aroundBombCount ? aroundBombCount : ''}
