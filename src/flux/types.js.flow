@@ -5,7 +5,6 @@ export type CellType = {|
     isFlag: boolean,
     isUnknown: boolean,
     aroundBombCount: number,
-    id: number,
 |};
 
 export type FieldType = CellType[];

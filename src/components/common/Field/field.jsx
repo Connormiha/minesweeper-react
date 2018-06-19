@@ -35,7 +35,13 @@ export default class Field extends React.PureComponent<PropsType> {
             return;
         }
 
-        const id = parseInt(current.dataset.id, 10);
+        const parent = current.parentElement;
+
+        if (!parent) {
+            return;
+        }
+
+        const id = Array.prototype.indexOf.call(parent.children, current);
 
         switch (e.type) {
             case 'click':
@@ -104,12 +110,12 @@ export default class Field extends React.PureComponent<PropsType> {
     renderCells() {
         const {field, isDead} = this.props;
 
-        return field.map((cell: CellType) =>
+        return field.map((cell: CellType, id: number) =>
             (
                 <Cell
                     cell={cell}
                     isShowBomb={isDead}
-                    key={cell.id}
+                    key={id}
                 />
             )
         );
@@ -120,7 +126,7 @@ export default class Field extends React.PureComponent<PropsType> {
 
         return (
             <section
-                className={b('', {locked: isDead})}
+                className={b({locked: isDead})}
                 onClick={this._handleEvent}
                 onContextMenu={this._handleEvent}
                 onDoubleClick={this._handleEvent}

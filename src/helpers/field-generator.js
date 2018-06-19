@@ -3,12 +3,11 @@
 import {getCellNeighbours} from 'helpers/utils';
 import type {FieldType, CellType} from 'flux/types';
 
-const createCell = (isBomb: boolean, id: number): CellType =>
+const createCell = (isBomb: boolean): CellType =>
     ({
         isOpened: false,
         isBomb,
         isDead: false,
-        id,
         aroundBombCount: 0,
         isFlag: false,
         isUnknown: false,
@@ -19,7 +18,7 @@ export const fieldGeneratorEmpty = (width: number, height: number): FieldType =>
     const end = height * width;
 
     for (let i = 0; i < end; i++) {
-        result.push(createCell(false, i));
+        result.push(createCell(false));
     }
 
     return result;
@@ -41,7 +40,7 @@ export default (width: number, height: number, bombs: number, safeId: number): F
             totalBombs--;
         }
 
-        result.push(createCell(isBomb, id));
+        result.push(createCell(isBomb));
     }
 
     for (let i = 0; i < end; i++) {
