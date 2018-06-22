@@ -41,9 +41,14 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
         });
     }
 
-    componentDidUpdate(nextProps: PropsType) {
-        if (nextProps.field.showAllBombs && !this.props.field.showAllBombs) {
+    componentDidUpdate(prevProps: PropsType) {
+        if (this.props.field.showAllBombs && !prevProps.field.showAllBombs) {
             this.props.onFinishGame(true);
+        } else if (
+            this.props.game.state === 'in-progress' &&
+            this.props.field.flagsCount + this.props.field.openedCount === this.props.field.filed.length
+        ) {
+            this.props.onFinishGame(false);
         }
     }
 
@@ -83,6 +88,7 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
                     field={field.field}
                     rowWidth={field.rowWidth}
                     isDead={field.showAllBombs}
+                    isWin={game.state === 'win'}
                     onClickCell={this._handleCellClick}
                     onClickMarkCell={onClickMarkCell}
                     onClickQuickOpenCell={onClickQuickOpenCell}

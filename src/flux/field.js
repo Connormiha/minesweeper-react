@@ -30,6 +30,7 @@ const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType 
                         isOpened: {$set: true},
                     },
                 },
+                openedCount: {$set: state.openedCount + 1},
             },
         );
 
@@ -54,6 +55,7 @@ const openCellState = (state: FieldStoreType, id: number): FieldType => {
                     isOpened: {$set: true},
                 },
             },
+            openedCount: {$set: state.openedCount + 1},
         },
     );
 

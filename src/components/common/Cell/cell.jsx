@@ -4,7 +4,7 @@ import style from './cell.styl';
 import React from 'react';
 import bem from 'bem-css-modules';
 
-import type {CellType} from 'flux/types.js.flow';
+import type {CellType} from 'flux/types';
 
 const b = bem(style);
 

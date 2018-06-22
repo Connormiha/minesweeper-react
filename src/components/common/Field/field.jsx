@@ -13,6 +13,7 @@ const b = bem(style);
 type PropsType = {|
     field: FieldType,
     isDead: boolean,
+    isWin: boolean,
     rowWidth: number,
     onClickCell: (number) => void,
     onClickMarkCell: (number) => void,
@@ -122,11 +123,11 @@ export default class Field extends React.PureComponent<PropsType> {
     }
 
     render() {
-        const {rowWidth, isDead} = this.props;
+        const {rowWidth, isDead, isWin} = this.props;
 
         return (
             <section
-                className={b({locked: isDead})}
+                className={b({locked: isDead || isWin})}
                 onClick={this._handleEvent}
                 onContextMenu={this._handleEvent}
                 onDoubleClick={this._handleEvent}
