@@ -46,7 +46,7 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
             this.props.onFinishGame(true);
         } else if (
             this.props.game.state === 'in-progress' &&
-            this.props.field.flagsCount + this.props.field.openedCount === this.props.field.filed.length
+            this.props.field.flagsCount + this.props.field.openedCount === this.props.field.field.length
         ) {
             this.props.onFinishGame(false);
         }

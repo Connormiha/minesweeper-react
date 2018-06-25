@@ -94,116 +94,134 @@ export const fillEmpty = (field: FieldFillParams) =>
 const getDefaultState = (): FieldType =>
     schema.field;
 
-export default (state: FieldStoreType = getDefaultState(), {type, field, id}: any) => {
-    let cell;
 
-    switch (type) {
-        case FIELD_FILL:
-            return {
-                ...schema.field,
-                isGenerated: true,
-                field: fieldGenerator(field.width, field.height, field.minesCount, id),
-                rowWidth: field.width,
-            };
+type ActionType = {
+    id: number,
+    type: string,
+    field: FieldType,
+};
 
-        case FIELD_FILL_EMPTY:
-            return {
-                ...schema.field,
-                field: fieldGeneratorEmpty(field.width, field.height),
-                rowWidth: field.width,
-            };
+type ActionsType = {
+    [string]: (FieldStoreType, ActionType) => FieldStoreType,
+};
 
-        case FIELD_OPEN:
-            cell = state.field[id];
+const actions: ActionsType = {
+    [FIELD_FILL](state: FieldStoreType, {field, id}: ActionType) {
+        return {
+            ...schema.field,
+            isGenerated: true,
+            field: fieldGenerator(field.width, field.height, field.minesCount, id),
+            rowWidth: field.width,
+        };
+    },
 
-            if (cell.aroundBombCount === 0 && !cell.isBomb) {
-                state = openAllowedSiblings(state, id);
-            } else {
-                state = openCellState(state, id);
-            }
+    [FIELD_FILL_EMPTY](state: FieldStoreType, {field}: ActionType) {
+        return {
+            ...schema.field,
+            field: fieldGeneratorEmpty(field.width, field.height),
+            rowWidth: field.width,
+        };
+    },
 
-            return state;
+    [FIELD_OPEN](state: FieldStoreType, action: ActionType) {
+        const cell = state.field[action.id];
 
-        case FIELD_MARK:
-            cell = state.field[id];
+        if (cell.aroundBombCount === 0 && !cell.isBomb) {
+            state = openAllowedSiblings(state, action.id);
+        } else {
+            state = openCellState(state, action.id);
+        }
 
-            if (cell.isUnknown) {
-                return immutable(
-                    state,
-                    {
-                        field: {
-                            [id]: {
-                                isUnknown: {$set: false},
-                            },
-                        },
-                    },
-                );
-            } else if (cell.isFlag) {
-                return immutable(
-                    state,
-                    {
-                        field: {
-                            [id]: {
-                                isUnknown: {$set: true},
-                                isFlag: {$set: false},
-                            },
-                        },
-                        flagsCount: {
-                            $set: state.flagsCount - 1,
-                        },
-                    },
-                );
-            }
+        return state;
+    },
 
+    [FIELD_MARK](state: FieldStoreType, {id}: ActionType) {
+        const cell = state.field[id];
+
+        if (cell.isUnknown) {
             return immutable(
                 state,
                 {
                     field: {
                         [id]: {
-                            isFlag: {$set: true},
+                            isUnknown: {$set: false},
                         },
-                    },
-                    flagsCount: {
-                        $set: state.flagsCount + 1,
                     },
                 },
             );
+        } else if (cell.isFlag) {
+            return immutable(
+                state,
+                {
+                    field: {
+                        [id]: {
+                            isUnknown: {$set: true},
+                            isFlag: {$set: false},
+                        },
+                    },
+                    flagsCount: {
+                        $set: state.flagsCount - 1,
+                    },
+                },
+            );
+        }
 
-        case FIELD_QUICK_OPEN:
-            cell = state.field[id];
+        return immutable(
+            state,
+            {
+                field: {
+                    [id]: {
+                        isFlag: {$set: true},
+                    },
+                },
+                flagsCount: {
+                    $set: state.flagsCount + 1,
+                },
+            },
+        );
+    },
 
-            if (cell.isOpened && cell.aroundBombCount) {
-                let countFlagsAround = 0;
-                const neighbours = getCellNeighbours(id, state.rowWidth, state.field.length);
+    [FIELD_QUICK_OPEN](state: FieldStoreType, {id}: ActionType) {
+        const cell = state.field[id];
 
-                const emptyCells = neighbours.filter((id) => {
-                    const cell = state.field[id];
+        if (cell.isOpened && cell.aroundBombCount) {
+            let countFlagsAround = 0;
+            const neighbours = getCellNeighbours(id, state.rowWidth, state.field.length);
 
-                    if (cell.isFlag) {
-                        countFlagsAround++;
+            const emptyCells = neighbours.filter((id) => {
+                const cell = state.field[id];
 
-                        return false;
-                    }
-
-                    if (!cell.isOpened && !cell.isUnknown) {
-                        return true;
-                    }
+                if (cell.isFlag) {
+                    countFlagsAround++;
 
                     return false;
-                });
-
-                if (countFlagsAround === cell.aroundBombCount) {
-                    emptyCells.forEach((id) => {
-                        if (state.field[id].aroundBombCount === 0 && !state.field[id].isBomb) {
-                            state = openAllowedSiblings(state, id);
-                        } else {
-                            state = openCellState(state, id);
-                        }
-                    });
                 }
-            }
 
-            return state;
+                if (!cell.isOpened && !cell.isUnknown) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (countFlagsAround === cell.aroundBombCount) {
+                emptyCells.forEach((id) => {
+                    if (state.field[id].aroundBombCount === 0 && !state.field[id].isBomb) {
+                        state = openAllowedSiblings(state, id);
+                    } else {
+                        state = openCellState(state, id);
+                    }
+                });
+            }
+        }
+
+        return state;
+    },
+};
+
+export default (state: FieldStoreType = getDefaultState(), action: ActionType) => {
+    if (actions[action.type]) {
+        return actions[action.type](state, action);
     }
 
     return state;
