@@ -127,12 +127,10 @@ const actions: ActionsType = {
         const cell = state.field[action.id];
 
         if (cell.aroundBombCount === 0 && !cell.isBomb) {
-            state = openAllowedSiblings(state, action.id);
-        } else {
-            state = openCellState(state, action.id);
+            return openAllowedSiblings(state, action.id);
         }
 
-        return state;
+        return openCellState(state, action.id);
     },
 
     [FIELD_MARK](state: FieldStoreType, {id}: ActionType) {
