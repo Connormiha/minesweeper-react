@@ -8,9 +8,8 @@ const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const nodePath = path.join(__dirname, './node_modules');
 const sourcePath = path.join(__dirname, './src/');
 
 const CONFIG = {
@@ -42,7 +41,7 @@ const CONFIG = {
     },
 }[NODE_ENV];
 
-let cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-loader'])
+const cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-loader'])
     .concat(
         MiniCssExtractPlugin.loader,
         [
@@ -50,7 +49,6 @@ let cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-load
                 loader: 'css-loader',
                 options: {
                     localIdentName: CONFIG.localIdentName,
-                    root: sourcePath,
                     modules: true,
                 },
             },
