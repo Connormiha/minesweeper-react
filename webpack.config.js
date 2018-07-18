@@ -127,10 +127,10 @@ module.exports = {
         setImmediate: false,
     },
     module: {
-        noParse: [/\.min\.js$/],
         rules: [
             {
                 test: /\.(jsx?|flow)$/,
+                sideEffects: false,
                 loader: 'babel-loader',
             },
             {
