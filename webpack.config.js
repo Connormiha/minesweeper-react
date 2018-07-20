@@ -182,8 +182,8 @@ module.exports = {
             },
         }),
         new MiniCssExtractPlugin({
-            filename: 'app.[hash].css',
-            chunkFilename: 'app.[hash].css',
+            filename: `${ROOT_URL}/static/[hash].css`.replace(/^\//, ''),
+            chunkFilename: `${ROOT_URL}/static/[id][hash].css`.replace(/^\//, ''),
         }),
     ],
     devServer: {

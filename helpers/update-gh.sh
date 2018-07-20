@@ -8,5 +8,5 @@ cp index.html 404.html
 name="${PWD##*/}"
 cp -R build/"${name}"/* ./
 git add .
-git commit -m "Update build :arrow_up:"
-git push origin gh-pages
+git commit -m "Update build :arrow_up:" --no-verify
+git push origin gh-pages --no-verify
