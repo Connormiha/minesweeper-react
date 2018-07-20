@@ -1,8 +1,0 @@
-{
-    "typescript.tsdk": null,
-    "typescript.tsc.autoDetect": "off",
-    "javascript.validate.enable": false,
-    "files.associations": {
-        "*.flow": "javascript"
-    }
-}

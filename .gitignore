@@ -4,6 +4,13 @@
 /build
 /deploy
 /coverage
+/src
+/helpers
+/stories
+/.storybook
+__tests__
 *.styl.flow
+.vscode
 npm-debug.log
 yarn-error.log
+*.styl.d.ts

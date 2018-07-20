@@ -1,7 +1,0 @@
-{
-    "recommendations": [
-	"dbaeumer.vscode-eslint",
-        "Alan.stylus",
-        "asvetliakov.snapshot-tools"
-    ]
-}
