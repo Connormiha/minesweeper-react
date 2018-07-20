@@ -8,6 +8,7 @@ const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const ROOT_URL = process.env.ROOT_URL || '';
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const sourcePath = path.join(__dirname, './src/');
@@ -76,7 +77,7 @@ module.exports = {
     output: {
         path: CONFIG.FOLDER,
         publicPath: '/',
-        filename: '[name].[hash].bundle.js'
+        filename: `${ROOT_URL}/static/[name].[hash].bundle.js`.replace(/^\//, ''),
     },
     resolve: {
         modules: [
@@ -144,6 +145,9 @@ module.exports = {
             {
                 test: /\.(png|jpg|gif|ico|woff2?|eot)$/,
                 loader: 'file-loader',
+                options: {
+                    name: `${ROOT_URL}/static/[hash].[ext]`.replace(/^\//, ''),
+                },
             },
             {
                 test: /\.svg$/,
@@ -173,7 +177,8 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify(NODE_ENV) || 'development',
+                NODE_ENV: JSON.stringify(NODE_ENV),
+                ROOT_URL: JSON.stringify(ROOT_URL),
             },
         }),
         new MiniCssExtractPlugin({

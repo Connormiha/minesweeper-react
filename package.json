@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "rm -fr build && NODE_ENV=production webpack",
+    "build:gh": "rm -fr build && NODE_ENV=production ROOT_URL=minesweeper webpack",
     "coverage": "NODE_ENV=testing jest --coverage --config jest.json",
     "lint": "node lint.js",
     "precommit": "NODE_ENV=pre_commit npm run types && npm run lint",
@@ -22,7 +23,8 @@
     "build:open": "http-server build --gzip -p 8000 -s -c-1",
     "test": "NODE_ENV=testing jest --no-cache --config jest.json",
     "types": "npm run createTypesCss && flow check",
-    "upgrade": "yarn upgrade-interactive --ignore-engines --exact --latest"
+    "upgrade": "yarn upgrade-interactive --ignore-engines --exact --latest",
+    "update-gh": "./helpers/update-gh.sh"
   },
   "devDependencies": {
     "autoprefixer": "9.0.0",

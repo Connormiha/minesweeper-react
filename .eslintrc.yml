@@ -55,6 +55,7 @@ rules:
   default-case: off
   no-plusplus: off
   no-continue: off
+  no-process-env: off
   no-inline-comments: off
   line-comment-position: off
   capitalized-comments: off
