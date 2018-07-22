@@ -52,7 +52,9 @@ export default class Settings extends React.PureComponent<PropsType> {
                 onSubmit={this.handleSubmit}
             >
                 <label className={b('label')}>
-                    {'Cols'}
+                    <span className={b('label-text')}>
+                        {'Cols'}
+                    </span>
                     <input
                         type="number"
                         min="1"
@@ -62,7 +64,9 @@ export default class Settings extends React.PureComponent<PropsType> {
                     />
                 </label>
                 <label className={b('label')}>
-                    {'Rows'}
+                    <span className={b('label-text')}>
+                        {'Rows'}
+                    </span>
                     <input
                         type="number"
                         min="1"
@@ -72,7 +76,9 @@ export default class Settings extends React.PureComponent<PropsType> {
                     />
                 </label>
                 <label className={b('label')}>
-                    {'Mines count'}
+                    <span className={b('label-text')}>
+                        {'Mines count'}
+                    </span>
                     <input
                         type="number"
                         min="1"

@@ -63,6 +63,7 @@ rules:
   dot-location: off
   multiline-ternary: off
   max-statements: off
+  max-lines-per-function: off
   no-ternary: off
   init-declarations: off
   valid-jsdoc: off

@@ -47,6 +47,10 @@ const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType 
 };
 
 const openCellState = (state: FieldStoreType, id: number): FieldType => {
+    if (state.field[id].isOpened) {
+        return state;
+    }
+
     state = immutable(
         state,
         {
