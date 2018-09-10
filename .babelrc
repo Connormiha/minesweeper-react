@@ -1,19 +1,19 @@
 {
-    "plugins": [["transform-object-rest-spread", {"useBuiltIns": true}]],
+    "plugins": [["@babel/plugin-proposal-object-rest-spread", {"useBuiltIns": true}]],
     "env": {
         "testing": {
-            "plugins": ["transform-flow-strip-types", "transform-es2015-modules-commonjs"]
+            "plugins": ["@babel/plugin-transform-flow-strip-types", "@babel/plugin-transform-modules-commonjs"]
         },
         "development": {
             "plugins": [
-                "syntax-flow",
+                "@babel/plugin-syntax-flow",
                 // "flow-react-proptypes",
-                "transform-flow-strip-types",
-                "transform-react-jsx"
+                "@babel/plugin-transform-flow-strip-types",
+                "@babel/plugin-transform-react-jsx"
             ]
         },
         "production": {
-            "plugins": ["transform-flow-strip-types", "transform-react-jsx", "transform-react-remove-prop-types"],
+            "plugins": ["@babel/plugin-transform-flow-strip-types", "@babel/plugin-transform-react-jsx", "react-remove-prop-types"],
         }
     }
 }
