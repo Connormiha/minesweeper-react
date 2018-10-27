@@ -22,7 +22,7 @@
     "start": "NODE_ENV=development webpack-dev-server",
     "build:open": "http-server build --gzip -p 8000 -s -c-1",
     "test": "NODE_ENV=testing jest --no-cache --config jest.json",
-    "types": "npm run createTypesCss && flow check",
+    "types": "npm run createTypesCss && flow",
     "upgrade": "yarn upgrade-interactive --ignore-engines --exact --latest",
     "update-gh": "./helpers/update-gh.sh"
   },

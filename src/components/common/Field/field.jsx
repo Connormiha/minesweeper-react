@@ -22,17 +22,48 @@ type PropsType = {|
 
 export default class Field extends React.PureComponent<PropsType> {
     _handleEvent: (e: SyntheticMouseEvent<HTMLDivElement>) => void;
+    _handleKeyPress: (e: KeyboardEvent) => void;
+    _fieldRef: {current: null | HTMLElement};
+    _isLockedEvents: boolean;
+    _timer: TimeoutID;
 
     constructor(props: PropsType) {
         super(props);
         this._handleEvent = this.handleEvent.bind(this);
+        this._handleKeyPress = this.handleKeyPress.bind(this);
+        this._isLockedEvents = false;
+        this._fieldRef = React.createRef();
+    }
+
+    componentDidMount() {
+        if (this._fieldRef.current) {
+            this._fieldRef.current.addEventListener('keypress', this._handleKeyPress);
+        }
+    }
+
+    componentWillUnmount() {
+        if (this._fieldRef.current) {
+            this._fieldRef.current.removeEventListener('keypress', this._handleKeyPress);
+        }
+    }
+
+    lockEvents() {
+        this._isLockedEvents = true;
+    }
+
+    unlockEvents() {
+        this._isLockedEvents = false;
     }
 
     handleEvent(e: SyntheticMouseEvent<HTMLDivElement>) {
         e.preventDefault();
+        if (this._isLockedEvents) {
+            return;
+        }
+
         const current = e.target;
 
-        if (!(current instanceof HTMLDivElement)) {
+        if (!(current instanceof HTMLButtonElement)) {
             return;
         }
 
@@ -43,7 +74,6 @@ export default class Field extends React.PureComponent<PropsType> {
         }
 
         const id = Array.prototype.indexOf.call(parent.children, current);
-
         switch (e.type) {
             case 'click':
                 this.hanldeClick(e, id);
@@ -61,12 +91,16 @@ export default class Field extends React.PureComponent<PropsType> {
     }
 
     hanldeClick(e: SyntheticMouseEvent<HTMLDivElement>, id: number) {
+        this.openCellEvent(id, e.ctrlKey || e.altKey);
+    }
+
+    openCellEvent(id: number, isMetaKey: boolean) {
         const {
             onClickCell, onClickMarkCell, onClickQuickOpenCell,
         } = this.props;
         const {isOpened, isFlag, isUnknown} = this.getCell(id);
 
-        if (e.ctrlKey || e.altKey) {
+        if (isMetaKey) {
             if (isOpened) {
                 onClickQuickOpenCell(id);
             } else {
@@ -75,6 +109,39 @@ export default class Field extends React.PureComponent<PropsType> {
         } else if (!isOpened && !isFlag && !isUnknown) {
             onClickCell(id);
         }
+    }
+
+    handleKeyPress(e: KeyboardEvent) {
+        const {keyCode} = e;
+        if (keyCode !== 32 && keyCode !== 13) {
+            return;
+        }
+
+        const current = document.activeElement;
+
+        if (!(current instanceof HTMLButtonElement)) {
+            return;
+        }
+
+        const parent = current.parentElement;
+
+        if (!parent) {
+            return;
+        }
+
+        e.preventDefault();
+        this.lockEvents();
+        clearTimeout(this._timer);
+
+        const id = Array.prototype.indexOf.call(parent.children, current);
+
+        if (keyCode === 32) {
+            this.handleContextMenu(id);
+        } else {
+            this.openCellEvent(id, false);
+        }
+
+        this._timer = setTimeout(() => this.unlockEvents(), 100);
     }
 
     hanldeDoubleClick(id: number) {
@@ -133,6 +200,7 @@ export default class Field extends React.PureComponent<PropsType> {
                 onDoubleClick={this._handleEvent}
                 onMouseUp={this._handleEvent}
                 style={{width: `${rowWidth * 34}px`}}
+                ref={this._fieldRef}
             >
                 {this.renderCells()}
             </section>

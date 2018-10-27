@@ -30,7 +30,7 @@ export const finish = (isFail: boolean) =>
 export const reset = () =>
     ({type: GAME_RESET});
 
-export default (state: GameType = getDefaultState(), {type, value, state: isFail}: any) => {
+export default (state: GameType = getDefaultState(), {type, value, isFail}: any) => {
     switch (type) {
         case GAME_SET_WIDTH:
             return immutable(state, {width: {$set: value}});

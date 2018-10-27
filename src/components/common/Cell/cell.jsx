@@ -32,11 +32,12 @@ export default class Cell extends React.PureComponent<PropsType> {
         }
 
         return (
-            <div
+            <button
+                type="button"
                 className={b(cssMods)}
             >
                 {isOpened && !isBomb && aroundBombCount ? aroundBombCount : ''}
-            </div>
+            </button>
         );
     }
 }

@@ -24,6 +24,8 @@ env:
 parserOptions:
   sourceType: module
 rules:
+  flowtype/define-flow-type: 1
+  flowtype/use-flow-type: 1
   react/react-in-jsx-scope: off
   react/prefer-stateless-function: off
   react/sort-prop-types: off
@@ -93,6 +95,3 @@ rules:
 globals:
   React: true
   bem: true
-  SyntheticInputEvent: true
-  SyntheticMouseEvent: true
-  SyntheticEvent: true
