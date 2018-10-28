@@ -39,7 +39,6 @@
     "babel-jest": "^23.6.0",
     "babel-loader": "8.0.4",
     "babel-plugin-flow-react-proptypes": "24.1.2",
-    "babel-plugin-react-remove-prop-types": "3.0.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "bem-css-modules": "1.4.1",
     "css-loader": "1.0.0",
