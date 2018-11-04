@@ -13,31 +13,30 @@ type PropsType = {|
     isShowBomb: boolean,
 |};
 
-export default class Cell extends React.PureComponent<PropsType> {
-    render() {
-        const {isBomb, isOpened, isDead, isFlag, isUnknown, aroundBombCount} = this.props.cell;
-        const {isShowBomb} = this.props;
+export default React.memo((props: PropsType) => {
+    const {isBomb, isOpened, isDead, isFlag, isUnknown, aroundBombCount} = props.cell;
+    const {isShowBomb} = props;
 
-        const cssMods: any = {
-            open: isOpened || (isShowBomb && isBomb),
-            close: !isOpened && (!isShowBomb || !isBomb),
-            bomb: (isOpened || isShowBomb) && isBomb,
-            dead: isDead,
-            flag: isFlag && !isOpened,
-            question: isUnknown && !isOpened,
-        };
+    const cssMods: any = {
+        open: isOpened || (isShowBomb && isBomb),
+        close: !isOpened && (!isShowBomb || !isBomb),
+        bomb: (isOpened || isShowBomb) && isBomb,
+        dead: isDead,
+        flag: isFlag && !isOpened,
+        question: isUnknown && !isOpened,
+    };
 
-        if (aroundBombCount && isOpened && !isBomb) {
-            cssMods.count = aroundBombCount;
-        }
-
-        return (
-            <button
-                type="button"
-                className={b(cssMods)}
-            >
-                {isOpened && !isBomb && aroundBombCount ? aroundBombCount : ''}
-            </button>
-        );
+    if (aroundBombCount && isOpened && !isBomb) {
+        cssMods.count = aroundBombCount;
     }
-}
+
+    return (
+        <button
+            type="button"
+            className={b(cssMods)}
+            disabled={isOpened && aroundBombCount === 0}
+        >
+            {isOpened && !isBomb && aroundBombCount ? aroundBombCount : ''}
+        </button>
+    );
+});

@@ -9,9 +9,17 @@ import {
     FIELD_MARK,
     FIELD_QUICK_OPEN,
 } from './constants';
-import immutable from 'immutability-helper';
 import fieldGenerator, {fieldGeneratorEmpty} from 'helpers/field-generator';
 import type {FieldType, FieldStoreType, FieldFillParams} from 'flux/types';
+
+const updateCell = (field: FieldType, id: number, data: any): FieldType => {
+    field = field.slice();
+    field[id] = {
+        ...field[id],
+        ...data,
+    };
+    return field;
+};
 
 const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType => {
     const width = state.rowWidth;
@@ -22,17 +30,11 @@ const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType 
             return;
         }
 
-        state = immutable(
-            state,
-            {
-                field: {
-                    [id]: {
-                        isOpened: {$set: true},
-                    },
-                },
-                openedCount: {$set: state.openedCount + 1},
-            },
-        );
+        state = {
+            ...state,
+            field: updateCell(state.field, id, {isOpened: true}),
+            openedCount: state.openedCount + 1,
+        };
 
         if (state.field[id].aroundBombCount === 0) {
             for (const i of getCellNeighbours(id, width, size)) {
@@ -51,30 +53,18 @@ const openCellState = (state: FieldStoreType, id: number): FieldType => {
         return state;
     }
 
-    state = immutable(
-        state,
-        {
-            field: {
-                [id]: {
-                    isOpened: {$set: true},
-                },
-            },
-            openedCount: {$set: state.openedCount + 1},
-        },
-    );
+    state = {
+        ...state,
+        field: updateCell(state.field, id, {isOpened: true}),
+        openedCount: state.openedCount + 1,
+    };
 
     if (state.field[id].isBomb) {
-        return immutable(
-            state,
-            {
-                field: {
-                    [id]: {
-                        isDead: {$set: true},
-                    },
-                },
-                showAllBombs: {$set: true},
-            },
-        );
+        return {
+            ...state,
+            field: updateCell(state.field, id, {isDead: true}),
+            showAllBombs: true,
+        };
     }
 
     return state;
@@ -141,46 +131,23 @@ const actions: ActionsType = {
         const cell = state.field[id];
 
         if (cell.isUnknown) {
-            return immutable(
-                state,
-                {
-                    field: {
-                        [id]: {
-                            isUnknown: {$set: false},
-                        },
-                    },
-                },
-            );
+            return {
+                ...state,
+                field: updateCell(state.field, id, {isUnknown: false}),
+            };
         } else if (cell.isFlag) {
-            return immutable(
-                state,
-                {
-                    field: {
-                        [id]: {
-                            isUnknown: {$set: true},
-                            isFlag: {$set: false},
-                        },
-                    },
-                    flagsCount: {
-                        $set: state.flagsCount - 1,
-                    },
-                },
-            );
+            return {
+                ...state,
+                field: updateCell(state.field, id, {isUnknown: true, isFlag: false}),
+                flagsCount: state.flagsCount - 1,
+            };
         }
 
-        return immutable(
-            state,
-            {
-                field: {
-                    [id]: {
-                        isFlag: {$set: true},
-                    },
-                },
-                flagsCount: {
-                    $set: state.flagsCount + 1,
-                },
-            },
-        );
+        return {
+            ...state,
+            field: updateCell(state.field, id, {isFlag: true}),
+            flagsCount: state.flagsCount + 1,
+        };
     },
 
     [FIELD_QUICK_OPEN](state: FieldStoreType, {id}: ActionType) {

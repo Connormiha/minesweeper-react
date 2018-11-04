@@ -1,7 +1,6 @@
 // @flow
 
 import schema from 'reducers/schema';
-import immutable from 'immutability-helper';
 
 import {
     GAME_SET_WIDTH, GAME_SET_HEIGHT, GAME_SET_MINES_COUNT, GAME_START,
@@ -33,22 +32,22 @@ export const reset = () =>
 export default (state: GameType = getDefaultState(), {type, value, isFail}: any) => {
     switch (type) {
         case GAME_SET_WIDTH:
-            return immutable(state, {width: {$set: value}});
+            return {...state, width: value};
 
         case GAME_SET_HEIGHT:
-            return immutable(state, {height: {$set: value}});
+            return {...state, height: value};
 
         case GAME_SET_MINES_COUNT:
-            return immutable(state, {minesCount: {$set: value}});
+            return {...state, minesCount: value};
 
         case GAME_RESET:
-            return immutable(state, {state: {$set: 'not-started'}});
+            return {...state, state: 'not-started'};
 
         case GAME_FINISH:
-            return immutable(state, {state: {$set: isFail ? 'fail' : 'win'}});
+            return {...state, state: isFail ? 'fail' : 'win'};
 
         case GAME_START:
-            return immutable(state, {state: {$set: 'in-progress'}});
+            return {...state, state: 'in-progress'};
     }
 
     return state;
