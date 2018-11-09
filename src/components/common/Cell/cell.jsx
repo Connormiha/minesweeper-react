@@ -3,6 +3,13 @@
 import style from './cell.styl';
 import React from 'react';
 import bem from 'bem-css-modules';
+import {
+    IS_OPENED_BIT_FLAG,
+    IS_BOMB_BIT_FLAG,
+    IS_DEAD_BIT_FLAG,
+    IS_FLAG_BIT_FLAG,
+    IS_UNKNOWN_BIT_FLAG,
+} from 'helpers/utils';
 
 import type {CellType} from 'flux/types';
 
@@ -14,8 +21,13 @@ type PropsType = {|
 |};
 
 export default React.memo((props: PropsType) => {
-    const {isBomb, isOpened, isDead, isFlag, isUnknown, aroundBombCount} = props.cell;
-    const {isShowBomb} = props;
+    const {cell, isShowBomb} = props;
+    const isBomb = Boolean(cell & IS_BOMB_BIT_FLAG);
+    const isOpened = Boolean(cell & IS_OPENED_BIT_FLAG);
+    const isDead = Boolean(cell & IS_DEAD_BIT_FLAG);
+    const isFlag = Boolean(cell & IS_FLAG_BIT_FLAG);
+    const isUnknown = Boolean(cell & IS_UNKNOWN_BIT_FLAG);
+    const aroundBombCount = cell >> 8;
 
     const cssMods: any = {
         open: isOpened || (isShowBomb && isBomb),

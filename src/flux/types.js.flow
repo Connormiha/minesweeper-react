@@ -1,11 +1,4 @@
-export type CellType = {|
-    isOpened: boolean,
-    isBomb: boolean,
-    isDead: boolean,
-    isFlag: boolean,
-    isUnknown: boolean,
-    aroundBombCount: number,
-|};
+export type CellType = number;
 
 export type FieldType = CellType[];
 
