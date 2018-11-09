@@ -3,6 +3,11 @@
 import React from 'react';
 import Cell from 'components/common/Cell';
 import bem from 'bem-css-modules';
+import {
+    IS_OPENED_BIT_FLAG,
+    IS_FLAG_BIT_FLAG,
+    IS_UNKNOWN_BIT_FLAG,
+} from 'helpers/utils';
 
 import type {CellType, FieldType} from 'flux/types';
 
@@ -98,7 +103,10 @@ export default class Field extends React.PureComponent<PropsType> {
         const {
             onClickCell, onClickMarkCell, onClickQuickOpenCell,
         } = this.props;
-        const {isOpened, isFlag, isUnknown} = this.getCell(id);
+        const cell = this.getCell(id);
+        const isOpened = Boolean(cell & IS_OPENED_BIT_FLAG);
+        const isFlag = Boolean(cell & IS_FLAG_BIT_FLAG);
+        const isUnknown = Boolean(cell & IS_UNKNOWN_BIT_FLAG);
 
         if (isMetaKey) {
             if (isOpened) {
@@ -164,9 +172,9 @@ export default class Field extends React.PureComponent<PropsType> {
     }
 
     quickOpen(id: number) {
-        const {isOpened, aroundBombCount} = this.getCell(id);
+        const cell = this.getCell(id);
 
-        if (isOpened && aroundBombCount) {
+        if ((cell & IS_OPENED_BIT_FLAG) && (cell >> 8) !== 0) {
             this.props.onClickQuickOpenCell(id);
         }
     }
@@ -178,7 +186,7 @@ export default class Field extends React.PureComponent<PropsType> {
     renderCells() {
         const {field, isDead} = this.props;
 
-        return field.map((cell: CellType, id: number) =>
+        return Array.prototype.map.call<Cell>(field, (cell: CellType, id: number) =>
             (
                 <Cell
                     cell={cell}

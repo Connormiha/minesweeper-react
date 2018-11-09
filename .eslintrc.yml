@@ -59,6 +59,8 @@ rules:
   no-continue: off
   no-process-env: off
   no-inline-comments: off
+  no-confusing-arrow: off
+  no-bitwise: off
   line-comment-position: off
   capitalized-comments: off
   object-property-newline: off

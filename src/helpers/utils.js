@@ -41,3 +41,11 @@ export const getCellNeighbours = (id: number, rowWidth: number, size: number): n
 
     return neighbours.filter((i) => i >= 0 && i < size);
 };
+
+export const IS_OPENED_BIT_FLAG = 2;
+export const IS_BOMB_BIT_FLAG = 4;
+export const IS_DEAD_BIT_FLAG = 8;
+export const IS_FLAG_BIT_FLAG = 16;
+export const IS_UNKNOWN_BIT_FLAG = 32;
+
+export const IS_EVERYTHING_BIT_FLAG = (2 ** 16) - 1;

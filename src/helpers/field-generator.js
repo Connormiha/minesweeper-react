@@ -1,32 +1,14 @@
 // @flow
 
-import {getCellNeighbours} from 'helpers/utils';
-import type {FieldType, CellType} from 'flux/types';
+import {getCellNeighbours, IS_BOMB_BIT_FLAG} from 'helpers/utils';
+import type {FieldType} from 'flux/types';
 
-const createCell = (isBomb: boolean): CellType =>
-    ({
-        isOpened: false,
-        isBomb,
-        isDead: false,
-        aroundBombCount: 0,
-        isFlag: false,
-        isUnknown: false,
-    });
-
-export const fieldGeneratorEmpty = (width: number, height: number): FieldType => {
-    const result = [];
-    const end = height * width;
-
-    for (let i = 0; i < end; i++) {
-        result.push(createCell(false));
-    }
-
-    return result;
-};
+export const fieldGeneratorEmpty = (width: number, height: number): FieldType =>
+    new Uint16Array(height * width);
 
 export default (width: number, height: number, bombs: number, safeId: number): FieldType => {
-    const result = [];
     const end = height * width;
+    const result = new Uint16Array(end);
     let totalCells = end;
     let totalBombs = bombs;
 
@@ -40,7 +22,7 @@ export default (width: number, height: number, bombs: number, safeId: number): F
             totalBombs--;
         }
 
-        result.push(createCell(isBomb));
+        result[i] = (isBomb ? IS_BOMB_BIT_FLAG : 0);
     }
 
     for (let i = 0; i < end; i++) {
@@ -50,12 +32,12 @@ export default (width: number, height: number, bombs: number, safeId: number): F
         for (const item of neighbours) {
             const cell = result[item];
 
-            if (cell.isBomb) {
+            if (cell & IS_BOMB_BIT_FLAG) {
                 aroundBombCount++;
             }
         }
 
-        result[i].aroundBombCount = aroundBombCount;
+        result[i] |= (aroundBombCount << 8);
     }
 
     return result;
