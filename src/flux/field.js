@@ -30,26 +30,33 @@ const updateCell = (field: FieldType, id: number, add: number, remove = IS_EVERY
 const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType => {
     const width = state.rowWidth;
     const size = state.field.length;
+    const visited = new Uint8Array(size);
+    const stack = [id];
+    while (stack.length) {
+        const currentId = stack.pop();
 
-    const openFieldCell = (id: number) => {
-        if (state.field[id] & IS_OPENED_BIT_FLAG) {
-            return;
+        visited[currentId] = 1;
+
+        if (state.field[currentId] & IS_OPENED_BIT_FLAG) {
+            continue;
         }
 
         state = {
             ...state,
-            field: updateCell(state.field, id, IS_OPENED_BIT_FLAG),
+            field: updateCell(state.field, currentId, IS_OPENED_BIT_FLAG),
             openedCount: state.openedCount + 1,
         };
 
-        if ((state.field[id] >> 8) === 0) {
-            for (const i of getCellNeighbours(id, width, size)) {
-                openFieldCell(i);
+        if ((state.field[currentId] >> 8) === 0) {
+            const neighbours = getCellNeighbours(currentId, width, size);
+            for (let i = neighbours.length - 1; i >= 0; i--) {
+                if (visited[neighbours[i]]) {
+                    continue;
+                }
+                stack.push(neighbours[i]);
             }
         }
-    };
-
-    openFieldCell(id);
+    }
 
     return state;
 };
