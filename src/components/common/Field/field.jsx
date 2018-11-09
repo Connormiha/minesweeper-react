@@ -186,7 +186,7 @@ export default class Field extends React.PureComponent<PropsType> {
     renderCells() {
         const {field, isDead} = this.props;
 
-        return field.map((cell: CellType, id: number) =>
+        return Array.prototype.map.call<Cell>(field, (cell: CellType, id: number) =>
             (
                 <Cell
                     cell={cell}

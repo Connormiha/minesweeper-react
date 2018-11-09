@@ -21,7 +21,7 @@ import fieldGenerator, {fieldGeneratorEmpty} from 'helpers/field-generator';
 import type {FieldType, FieldStoreType, FieldFillParams} from 'flux/types';
 
 const updateCell = (field: FieldType, id: number, add: number, remove = IS_EVERYTHING_BIT_FLAG): FieldType => {
-    field = field.slice();
+    field = new Uint16Array(field);
     field[id] |= add;
     field[id] &= remove;
     return field;

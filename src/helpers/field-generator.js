@@ -3,20 +3,12 @@
 import {getCellNeighbours, IS_BOMB_BIT_FLAG} from 'helpers/utils';
 import type {FieldType} from 'flux/types';
 
-export const fieldGeneratorEmpty = (width: number, height: number): FieldType => {
-    const result = [];
-    const end = height * width;
-
-    for (let i = 0; i < end; i++) {
-        result.push(0);
-    }
-
-    return result;
-};
+export const fieldGeneratorEmpty = (width: number, height: number): FieldType =>
+    new Uint16Array(height * width);
 
 export default (width: number, height: number, bombs: number, safeId: number): FieldType => {
-    const result = [];
     const end = height * width;
+    const result = new Uint16Array(end);
     let totalCells = end;
     let totalBombs = bombs;
 
@@ -30,7 +22,7 @@ export default (width: number, height: number, bombs: number, safeId: number): F
             totalBombs--;
         }
 
-        result.push(isBomb ? IS_BOMB_BIT_FLAG : 0);
+        result[i] = (isBomb ? IS_BOMB_BIT_FLAG : 0);
     }
 
     for (let i = 0; i < end; i++) {
