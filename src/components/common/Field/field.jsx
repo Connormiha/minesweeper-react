@@ -120,8 +120,9 @@ export default class Field extends React.PureComponent<PropsType> {
     }
 
     handleKeyPress(e: KeyboardEvent) {
-        const {keyCode} = e;
-        if (keyCode !== 32 && keyCode !== 13) {
+        const {charCode} = e;
+
+        if (charCode !== 32 && charCode !== 13) {
             return;
         }
 
@@ -143,7 +144,7 @@ export default class Field extends React.PureComponent<PropsType> {
 
         const id = Array.prototype.indexOf.call(parent.children, current);
 
-        if (keyCode === 32) {
+        if (charCode === 32) {
             this.handleContextMenu(id);
         } else {
             this.openCellEvent(id, false);
