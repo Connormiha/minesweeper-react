@@ -32,6 +32,8 @@ const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType 
     const size = state.field.length;
     const visited = new Uint8Array(size);
     const stack = [id];
+    let {field, openedCount} = state;
+
     while (stack.length) {
         const currentId = stack.pop();
 
@@ -41,11 +43,8 @@ const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType 
             continue;
         }
 
-        state = {
-            ...state,
-            field: updateCell(state.field, currentId, IS_OPENED_BIT_FLAG),
-            openedCount: state.openedCount + 1,
-        };
+        field = updateCell(field, currentId, IS_OPENED_BIT_FLAG);
+        openedCount++;
 
         if ((state.field[currentId] >> 8) === 0) {
             const neighbours = getCellNeighbours(currentId, width, size);
@@ -58,7 +57,11 @@ const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType 
         }
     }
 
-    return state;
+    return {
+        ...state,
+        field,
+        openedCount,
+    };
 };
 
 const openCellState = (state: FieldStoreType, id: number): FieldType => {
@@ -66,21 +69,20 @@ const openCellState = (state: FieldStoreType, id: number): FieldType => {
         return state;
     }
 
-    state = {
-        ...state,
-        field: updateCell(state.field, id, IS_OPENED_BIT_FLAG),
-        openedCount: state.openedCount + 1,
-    };
-
     if (state.field[id] & IS_BOMB_BIT_FLAG) {
         return {
             ...state,
-            field: updateCell(state.field, id, IS_DEAD_BIT_FLAG),
+            field: updateCell(state.field, id, IS_DEAD_BIT_FLAG | IS_OPENED_BIT_FLAG),
+            openedCount: state.openedCount + 1,
             showAllBombs: true,
         };
     }
 
-    return state;
+    return {
+        ...state,
+        field: updateCell(state.field, id, IS_OPENED_BIT_FLAG),
+        openedCount: state.openedCount + 1,
+    };
 };
 
 export const openCell = (id: number) =>
