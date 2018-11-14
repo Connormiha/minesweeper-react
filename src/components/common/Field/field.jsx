@@ -15,6 +15,14 @@ import style from './field.styl';
 
 const b = bem(style);
 
+const KEY_ENTER = 13;
+const KEY_SPACE = 32;
+const KEY_UP = 38;
+const KEY_DOWN = 40;
+const KEY_LEFT = 37;
+const KEY_RIGHT = 39;
+const allowedKeys = new Set([KEY_ENTER, KEY_SPACE, KEY_DOWN, KEY_UP, KEY_LEFT, KEY_RIGHT]);
+
 type PropsType = {|
     field: FieldType,
     isDead: boolean,
@@ -42,13 +50,13 @@ export default class Field extends React.PureComponent<PropsType> {
 
     componentDidMount() {
         if (this._fieldRef.current) {
-            this._fieldRef.current.addEventListener('keypress', this._handleKeyPress);
+            this._fieldRef.current.addEventListener('keydown', this._handleKeyPress);
         }
     }
 
     componentWillUnmount() {
         if (this._fieldRef.current) {
-            this._fieldRef.current.removeEventListener('keypress', this._handleKeyPress);
+            this._fieldRef.current.removeEventListener('keydown', this._handleKeyPress);
         }
     }
 
@@ -120,9 +128,9 @@ export default class Field extends React.PureComponent<PropsType> {
     }
 
     handleKeyPress(e: KeyboardEvent) {
-        const {charCode} = e;
+        const {keyCode} = e;
 
-        if (charCode !== 32 && charCode !== 13) {
+        if (!allowedKeys.has(keyCode)) {
             return;
         }
 
@@ -143,11 +151,36 @@ export default class Field extends React.PureComponent<PropsType> {
         clearTimeout(this._timer);
 
         const id = Array.prototype.indexOf.call(parent.children, current);
+        let nextId: number = -1;
 
-        if (charCode === 32) {
-            this.handleContextMenu(id);
-        } else {
-            this.openCellEvent(id, false);
+        switch (keyCode) {
+            case KEY_SPACE:
+                this.handleContextMenu(id);
+                break;
+
+            case KEY_ENTER:
+                this.openCellEvent(id, false);
+                break;
+
+            case KEY_LEFT:
+                nextId = this.getPrevAvailableId(id - 1);
+                break;
+
+            case KEY_RIGHT:
+                nextId = this.getNextAvailableId(id + 1);
+                break;
+
+            case KEY_UP:
+                nextId = this.getPrevAvailableId(id - this.props.rowWidth);
+                break;
+
+            case KEY_DOWN:
+                nextId = this.getNextAvailableId(id + this.props.rowWidth);
+                break;
+        }
+
+        if (parent.children[nextId]) {
+            parent.children[nextId].focus();
         }
 
         this._timer = setTimeout(() => this.unlockEvents(), 100);
@@ -182,6 +215,34 @@ export default class Field extends React.PureComponent<PropsType> {
 
     getCell(id: number): Cell {
         return this.props.field[id];
+    }
+
+    getNextAvailableId(id: number): number {
+        while (id < this.props.field.length) {
+            if (
+                !(this.props.field[id] & IS_OPENED_BIT_FLAG) ||
+                (this.props.field[id] >> 8) !== 0
+            ) {
+                break;
+            }
+            id++;
+        }
+
+        return id;
+    }
+
+    getPrevAvailableId(id: number): number {
+        while (id >= 0) {
+            if (
+                !(this.props.field[id] & IS_OPENED_BIT_FLAG) ||
+                (this.props.field[id] >> 8) !== 0
+            ) {
+                break;
+            }
+            id--;
+        }
+
+        return id;
     }
 
     renderCells() {

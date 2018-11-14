@@ -37,6 +37,12 @@ $colors =   'blue',
     &_open
         background: #dededc
 
+        &:focus
+            background: #d3d7cf
+
+        &:disabled
+            background: #dededc
+
     &_close
         background: $color
         transition: background 0.3s
@@ -44,6 +50,9 @@ $colors =   'blue',
         &:focus
         &:hover
             background: #d3d7cf
+        
+        &:focus
+            transition: none
 
     &_bomb
     &_flag

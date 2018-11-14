@@ -39,7 +39,7 @@ const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType 
 
         visited[currentId] = 1;
 
-        if (state.field[currentId] & IS_OPENED_BIT_FLAG) {
+        if (field[currentId] & IS_OPENED_BIT_FLAG) {
             continue;
         }
 

@@ -15,6 +15,26 @@ import type {CellType} from 'flux/types';
 
 const b = bem(style);
 
+const getAriaLabel = (cell: number): string => {
+    if (cell & IS_FLAG_BIT_FLAG) {
+        return 'flag';
+    }
+
+    if (cell & IS_UNKNOWN_BIT_FLAG) {
+        return 'unknown mark';
+    }
+
+    if (cell & IS_OPENED_BIT_FLAG) {
+        if (cell >> 8 !== 0) {
+            return `around bombs ${cell >> 8}`;
+        }
+
+        return 'opened empty cell';
+    }
+
+    return 'not oppened cell';
+};
+
 type PropsType = {|
     cell: CellType,
     isShowBomb: boolean,
@@ -47,6 +67,7 @@ export default React.memo((props: PropsType) => {
             type="button"
             className={b(cssMods)}
             disabled={isOpened && aroundBombCount === 0}
+            aria-label={getAriaLabel(cell)}
         >
             {isOpened && !isBomb && aroundBombCount ? aroundBombCount : ''}
         </button>
