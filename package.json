@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "rm -fr build && NODE_ENV=production webpack",
-    "build:gh": "rm -fr build && NODE_ENV=production ROOT_URL=minesweeper webpack",
+    "build:gh": "rm -fr build && NODE_ENV=production ROOT_URL=minesweeper-react webpack",
     "coverage": "NODE_ENV=testing jest --coverage --config jest.json",
     "lint": "node lint.js",
     "precommit": "NODE_ENV=pre_commit npm run types && npm run lint",
