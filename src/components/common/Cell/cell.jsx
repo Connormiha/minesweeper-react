@@ -6,7 +6,6 @@ import bem from 'bem-css-modules';
 import {
     IS_OPENED_BIT_FLAG,
     IS_BOMB_BIT_FLAG,
-    IS_DEAD_BIT_FLAG,
     IS_FLAG_BIT_FLAG,
     IS_UNKNOWN_BIT_FLAG,
 } from 'helpers/utils';
@@ -25,8 +24,8 @@ const getAriaLabel = (cell: number): string => {
     }
 
     if (cell & IS_OPENED_BIT_FLAG) {
-        if (cell >> 8 !== 0) {
-            return `around bombs ${cell >> 8}`;
+        if (cell >> 4 !== 0) {
+            return `around bombs ${cell >> 4}`;
         }
 
         return 'opened empty cell';
@@ -40,14 +39,14 @@ type PropsType = {|
     isShowBomb: boolean,
 |};
 
-export default React.memo((props: PropsType) => {
+export default React.memo<PropsType>((props: PropsType) => {
     const {cell, isShowBomb} = props;
     const isBomb = Boolean(cell & IS_BOMB_BIT_FLAG);
     const isOpened = Boolean(cell & IS_OPENED_BIT_FLAG);
-    const isDead = Boolean(cell & IS_DEAD_BIT_FLAG);
+    const isDead = isBomb && isOpened;
     const isFlag = Boolean(cell & IS_FLAG_BIT_FLAG);
     const isUnknown = Boolean(cell & IS_UNKNOWN_BIT_FLAG);
-    const aroundBombCount = cell >> 8;
+    const aroundBombCount = cell >> 4;
 
     const cssMods: any = {
         open: isOpened || (isShowBomb && isBomb),

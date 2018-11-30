@@ -5,7 +5,6 @@ import {
     getCellNeighbours,
     IS_OPENED_BIT_FLAG,
     IS_BOMB_BIT_FLAG,
-    IS_DEAD_BIT_FLAG,
     IS_FLAG_BIT_FLAG,
     IS_UNKNOWN_BIT_FLAG,
     IS_EVERYTHING_BIT_FLAG,
@@ -21,7 +20,7 @@ import fieldGenerator, {fieldGeneratorEmpty} from 'helpers/field-generator';
 import type {FieldType, FieldStoreType, FieldFillParams} from 'flux/types';
 
 const updateCell = (field: FieldType, id: number, add: number, remove = IS_EVERYTHING_BIT_FLAG): FieldType => {
-    field = new Uint16Array(field);
+    field = new Uint8Array(field);
     field[id] |= add;
     field[id] &= remove;
     return field;
@@ -46,7 +45,7 @@ const openAllowedSiblings = (state: FieldStoreType, id: number): FieldStoreType 
         field = updateCell(field, currentId, IS_OPENED_BIT_FLAG);
         openedCount++;
 
-        if ((state.field[currentId] >> 8) === 0) {
+        if ((state.field[currentId] >> 4) === 0) {
             const neighbours = getCellNeighbours(currentId, width, size);
             for (let i = neighbours.length - 1; i >= 0; i--) {
                 if (visited[neighbours[i]]) {
@@ -72,7 +71,7 @@ const openCellState = (state: FieldStoreType, id: number): FieldType => {
     if (state.field[id] & IS_BOMB_BIT_FLAG) {
         return {
             ...state,
-            field: updateCell(state.field, id, IS_DEAD_BIT_FLAG | IS_OPENED_BIT_FLAG),
+            field: updateCell(state.field, id, IS_OPENED_BIT_FLAG),
             openedCount: state.openedCount + 1,
             showAllBombs: true,
         };
@@ -135,7 +134,7 @@ const actions: ActionsType = {
     [FIELD_OPEN](state: FieldStoreType, action: ActionType) {
         const cell = state.field[action.id];
 
-        if ((cell >> 8) === 0 && !(cell & IS_BOMB_BIT_FLAG)) {
+        if ((cell >> 4) === 0 && !(cell & IS_BOMB_BIT_FLAG)) {
             return openAllowedSiblings(state, action.id);
         }
 
@@ -168,7 +167,7 @@ const actions: ActionsType = {
     [FIELD_QUICK_OPEN](state: FieldStoreType, {id}: ActionType) {
         const cell = state.field[id];
 
-        if ((cell & IS_OPENED_BIT_FLAG) && ((cell >> 8) !== 0)) {
+        if ((cell & IS_OPENED_BIT_FLAG) && ((cell >> 4) !== 0)) {
             let countFlagsAround = 0;
             const neighbours = getCellNeighbours(id, state.rowWidth, state.field.length);
 
@@ -188,9 +187,9 @@ const actions: ActionsType = {
                 return false;
             });
 
-            if (countFlagsAround === cell >> 8) {
+            if (countFlagsAround === cell >> 4) {
                 emptyCells.forEach((id) => {
-                    if ((state.field[id] >> 8) === 0 && !(state.field[id] & IS_BOMB_BIT_FLAG)) {
+                    if ((state.field[id] >> 4) === 0 && !(state.field[id] & IS_BOMB_BIT_FLAG)) {
                         state = openAllowedSiblings(state, id);
                     } else {
                         state = openCellState(state, id);
