@@ -26,6 +26,7 @@ parserOptions:
 rules:
   flowtype/define-flow-type: 1
   flowtype/use-flow-type: 1
+  react/no-set-state: off
   react/react-in-jsx-scope: off
   react/prefer-stateless-function: off
   react/sort-prop-types: off
@@ -48,6 +49,7 @@ rules:
   - error
   - as-needed
   no-underscore-dangle: off
+  class-methods-use-this: off
   sort-imports: off
   id-length: off
   sort-keys: off

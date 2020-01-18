@@ -49,8 +49,9 @@ const cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-lo
             {
                 loader: 'css-loader',
                 options: {
-                    localIdentName: CONFIG.localIdentName,
-                    modules: true,
+                    modules: {
+                        localIdentName: CONFIG.localIdentName,
+                    },
                 },
             },
         ],
@@ -60,7 +61,7 @@ const cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-lo
             loader: 'postcss-loader',
             options: {
                 plugins: [
-                    autoprefixer({browsers: ['Chrome 64', 'Firefox 55', 'Safari 11']}),
+                    autoprefixer(),
                 ],
             },
         }

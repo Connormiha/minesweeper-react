@@ -71,16 +71,19 @@ $colors =   blue,
     &_dead
         background-color: red
 
+        &:focus
+            background-color: red
+
     &_bomb
         &::before
-            background-image: url(assets/images/bomb.svg)
+            background-image: url('~assets/images/bomb.svg')
     &_flag
         &::before
-            background-image: url(assets/images/flag.svg)
+            background-image: url('~assets/images/flag.svg')
 
     &_question
         &::before
-            background-image: url(assets/images/question.svg)
+            background-image: url('~assets/images/question.svg')
 
     &_count
         for $i in 1..8

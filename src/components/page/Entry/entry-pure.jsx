@@ -3,6 +3,7 @@
 import React from 'react';
 import Field from 'components/common/Field';
 import Settings from 'components/common/Settings';
+// import Gamepad from 'components/common/gamepad';
 import GameStatus from 'components/common/game-status';
 
 import './entry.styl';
@@ -105,6 +106,7 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
                     minesLeftCount={game.minesCount - field.flagsCount}
                     state={game.state}
                 />
+                {/* <Gamepad /> */}
             </div>
         );
     }
