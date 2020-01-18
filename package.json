@@ -87,5 +87,11 @@
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.10.1",
     "webpack-sources": "1.4.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm test"
+    }
   }
 }
