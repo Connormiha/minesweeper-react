@@ -8,17 +8,17 @@ module.exports = {
     'flow'
   ],
   transform: {
-    '.+\\.(css|styl)$': '<rootDir>/__tests__/preprocessor-stylus.js',
-    '.+\\.jsx?$': 'babel-jest'
+    '.+\\.(css|styl)$': 'jest-css-modules-transform',
+    '.+\\.tsx?$': 'ts-node'
   },
-  testRegex: '/__tests__/.*\\.spec\\.jsx?$',
+  testRegex: '/__tests__/.*\\.test\\.tsx?$',
   moduleDirectories: [
     'node_modules',
     'src'
   ],
   bail: true,
   collectCoverageFrom: [
-    'src/**/*.{js,jsx}'
+    'src/**/*.{ts,tsx}'
   ],
   setupFiles: [
     '<rootDir>/__tests__/setup.js'

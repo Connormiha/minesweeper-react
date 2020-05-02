@@ -42,20 +42,17 @@ const CONFIG = {
     },
 }[NODE_ENV];
 
-const cssLoaders = (NODE_ENV === 'production' ? [] : ['css-modules-flow-types-loader'])
-    .concat(
-        MiniCssExtractPlugin.loader,
-        [
-            {
-                loader: 'css-loader',
-                options: {
-                    modules: {
-                        localIdentName: CONFIG.localIdentName,
-                    },
-                },
+const cssLoaders = [
+    MiniCssExtractPlugin.loader,
+    {
+        loader: 'css-loader',
+        options: {
+            modules: {
+                localIdentName: CONFIG.localIdentName,
             },
-        ],
-    )
+        },
+    },
+]
     .concat(
         {
             loader: 'postcss-loader',
@@ -71,7 +68,7 @@ let stylusLoaders = cssLoaders.concat('stylus-loader');
 
 module.exports = {
     entry: {
-        app: './src/app.jsx',
+        app: './src/app.tsx',
     },
 
     //context: sourcePath,
@@ -112,7 +109,7 @@ module.exports = {
             //         if (/\.css$/.test(entry)) return 'style';
             //         if (/\.woff$/.test(entry)) return 'font';
             //         if (/\.(svg|png)$/.test(entry)) return 'image';
-    
+
             //         return 'script';
             //     },
             // }),
@@ -131,9 +128,9 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(jsx?|flow)$/,
+                test: /\.tsx?$/,
                 sideEffects: false,
-                loader: 'babel-loader',
+                loader: 'ts-loader',
             },
             {
                 test: /\.css$/,

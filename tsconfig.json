@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "target": "ES2019",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": true,
+        "jsx": "react",
+        "baseUrl" : "src",
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+            "node": ["../node_modules/@types/node/index"],
+            "history": ["../node_modules/@types/history/index"],
+            "prop-types": ["../node_modules/@types/prop-types/index"],
+            "redux": ["../node_modules/@types/redux/index"],
+            "react": ["../node_modules/@types/react/index"],
+            "react-router": ["../node_modules/@types/react-router/index"]
+        },
+        "lib": ["dom", "es2020"]
+    },
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "atom": {
+        "rewriteTsconfig": false
+    }
+}
