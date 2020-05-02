@@ -4,6 +4,4 @@
 /build
 /deploy
 /coverage
-*.styl.flow
 npm-debug.log
-yarn-error.log

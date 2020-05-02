@@ -47,13 +47,13 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
         this.props.onFinishGame(true);
       } else if (
         game.state === 'in-progress' &&
-            (
-              field.flagsCount + field.openedCount === field.field.length ||
-                (
-                  field.field.length === field.openedCount + game.minesCount &&
-                    !field.showAllBombs
-                )
-            )
+          (
+            field.flagsCount + field.openedCount === field.field.length ||
+              (
+                field.field.length === field.openedCount + game.minesCount &&
+                  !field.showAllBombs
+              )
+          )
       ) {
         this.props.onFinishGame(false);
       }

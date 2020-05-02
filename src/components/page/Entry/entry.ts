@@ -1,8 +1,7 @@
-import {connect} from 'react-redux';
+import {batch, connect} from 'react-redux';
 import Pure from './entry-pure';
 import * as fieldActions from 'flux/field';
 import * as gameActions from 'flux/game';
-import {batchActions} from 'redux-batched-actions';
 
 import type {Dispatch} from 'redux';
 import type {FieldFillParams} from 'flux/types';
@@ -16,12 +15,10 @@ export default connect(
     },
 
     onFirstClickCell(id: number, field: FieldFillParams): void {
-      dispatch(
-        batchActions([
-          fieldActions.fill(field, id),
-          fieldActions.openCell(id),
-        ])
-      );
+      batch(() => {
+        dispatch(fieldActions.fill(field, id));
+        dispatch(fieldActions.openCell(id));
+      });
     },
 
     onClickMarkCell(id: number): void {
@@ -49,12 +46,10 @@ export default connect(
     },
 
     onStartGame(field: FieldFillParams): void {
-      dispatch(
-        batchActions([
-          fieldActions.fillEmpty(field),
-          gameActions.start(),
-        ])
-      );
+      batch(() => {
+        dispatch(fieldActions.fillEmpty(field));
+        dispatch(gameActions.start());
+      });
     },
   }),
 )(Pure);
