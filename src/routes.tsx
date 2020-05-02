@@ -6,13 +6,13 @@ import PageEntry from 'components/page/Entry';
 const ROOT_URL_ROUTER = process.env.ROOT_URL;
 
 export default (
-    <Router basename={`/${ROOT_URL_ROUTER}`}>
-        <Switch>
-            <Route
-                path="/"
-                exact
-                component={PageEntry}
-            />
-        </Switch>
-    </Router>
+  <Router basename={`/${ROOT_URL_ROUTER}`}>
+    <Switch>
+      <Route
+        path="/"
+        exact
+        component={PageEntry}
+      />
+    </Switch>
+  </Router>
 );

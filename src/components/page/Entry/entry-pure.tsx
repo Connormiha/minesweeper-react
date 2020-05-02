@@ -26,86 +26,86 @@ export default class PageEntryPure extends React.PureComponent<PropsType> {
     _handleCellClick: (id: number) => void;
 
     constructor(props: PropsType) {
-        super(props);
-        this._handleCellClick = this.handleCellClick.bind(this);
+      super(props);
+      this._handleCellClick = this.handleCellClick.bind(this);
     }
 
     componentDidMount(): void {
-        const {game, onStartGame} = this.props;
+      const {game, onStartGame} = this.props;
 
-        onStartGame({
-            width: game.width,
-            height: game.height,
-            minesCount: game.minesCount,
-        });
+      onStartGame({
+        width: game.width,
+        height: game.height,
+        minesCount: game.minesCount,
+      });
     }
 
     componentDidUpdate(prevProps: PropsType): void {
-        const {field, game} = this.props;
+      const {field, game} = this.props;
 
-        if (field.showAllBombs && !prevProps.field.showAllBombs) {
-            this.props.onFinishGame(true);
-        } else if (
-            game.state === 'in-progress' &&
+      if (field.showAllBombs && !prevProps.field.showAllBombs) {
+        this.props.onFinishGame(true);
+      } else if (
+        game.state === 'in-progress' &&
             (
-                field.flagsCount + field.openedCount === field.field.length ||
+              field.flagsCount + field.openedCount === field.field.length ||
                 (
-                    field.field.length === field.openedCount + game.minesCount &&
+                  field.field.length === field.openedCount + game.minesCount &&
                     !field.showAllBombs
                 )
             )
-        ) {
-            this.props.onFinishGame(false);
-        }
+      ) {
+        this.props.onFinishGame(false);
+      }
     }
 
     handleCellClick(id: number): void {
-        const {game, field, onFirstClickCell, onClickCell} = this.props;
+      const {game, field, onFirstClickCell, onClickCell} = this.props;
 
-        if (field.isGenerated) {
-            onClickCell(id);
-        } else {
-            onFirstClickCell(
-                id,
-                {
-                    width: game.width,
-                    height: game.height,
-                    minesCount: game.minesCount,
-                }
-            );
-        }
+      if (field.isGenerated) {
+        onClickCell(id);
+      } else {
+        onFirstClickCell(
+          id,
+          {
+            width: game.width,
+            height: game.height,
+            minesCount: game.minesCount,
+          }
+        );
+      }
     }
 
     render(): React.ReactNode {
-        const {
-            game, field, onChangeFieldWidth, onChangeFieldHeight, onChangeFieldMinesCount,
-            onStartGame, onClickMarkCell, onClickQuickOpenCell,
-        } = this.props;
+      const {
+        game, field, onChangeFieldWidth, onChangeFieldHeight, onChangeFieldMinesCount,
+        onStartGame, onClickMarkCell, onClickQuickOpenCell,
+      } = this.props;
 
-        return (
-            <div className="test">
-                <Settings
-                    game={game}
-                    onChangeFieldWidth={onChangeFieldWidth}
-                    onChangeFieldHeight={onChangeFieldHeight}
-                    onChangeFieldMinesCount={onChangeFieldMinesCount}
-                    onStartGame={onStartGame}
-                />
-                <Field
-                    field={field.field}
-                    rowWidth={field.rowWidth}
-                    isDead={field.showAllBombs}
-                    isWin={game.state === 'win'}
-                    onClickCell={this._handleCellClick}
-                    onClickMarkCell={onClickMarkCell}
-                    onClickQuickOpenCell={onClickQuickOpenCell}
-                />
-                <GameStatus
-                    minesLeftCount={game.minesCount - field.flagsCount}
-                    state={game.state}
-                />
-                {/* <Gamepad /> */}
-            </div>
-        );
+      return (
+        <div className="test">
+          <Settings
+            game={game}
+            onChangeFieldWidth={onChangeFieldWidth}
+            onChangeFieldHeight={onChangeFieldHeight}
+            onChangeFieldMinesCount={onChangeFieldMinesCount}
+            onStartGame={onStartGame}
+          />
+          <Field
+            field={field.field}
+            rowWidth={field.rowWidth}
+            isDead={field.showAllBombs}
+            isWin={game.state === 'win'}
+            onClickCell={this._handleCellClick}
+            onClickMarkCell={onClickMarkCell}
+            onClickQuickOpenCell={onClickQuickOpenCell}
+          />
+          <GameStatus
+            minesLeftCount={game.minesCount - field.flagsCount}
+            state={game.state}
+          />
+          {/* <Gamepad /> */}
+        </div>
+      );
     }
 }

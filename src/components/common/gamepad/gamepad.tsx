@@ -12,52 +12,52 @@ export default class GamepadComponent extends React.PureComponent<any, IGamepadS
     _handleGamepadConnectedBinded: (e: any) => void;
 
     constructor(props) {
-        super(props);
+      super(props);
 
-        this._handleGamepadConnectedBinded = this.handleGamepadConnected.bind(this);
+      this._handleGamepadConnectedBinded = this.handleGamepadConnected.bind(this);
 
-        this.state = {
-            gamepads: [...navigator.getGamepads()].filter(Boolean) as Gamepad[],
-        };
+      this.state = {
+        gamepads: [...navigator.getGamepads()].filter(Boolean) as Gamepad[],
+      };
     }
 
     componentDidMount(): void {
-        window.addEventListener('gamepadconnected', this._handleGamepadConnectedBinded);
+      window.addEventListener('gamepadconnected', this._handleGamepadConnectedBinded);
     }
 
     componentWillUnmount(): void {
-        window.removeEventListener('gamepadconnected', this._handleGamepadConnectedBinded);
+      window.removeEventListener('gamepadconnected', this._handleGamepadConnectedBinded);
     }
 
     handleGamepadConnected(): void {
-        this.setState({
-            gamepads: [...navigator.getGamepads()].filter(Boolean) as Gamepad[],
-        });
+      this.setState({
+        gamepads: [...navigator.getGamepads()].filter(Boolean) as Gamepad[],
+      });
     }
 
     renderControls(): React.ReactChild {
-        return (
-            <section className={b()}>
-                {
-                    this.state.gamepads.map((item) => {
-                        return (
-                            <div
-                                key={item.id}
-                            >
-                                {item.id}/{item.id}
-                            </div>
-                        );
-                    })
-                }
-            </section>
-        );
+      return (
+        <section className={b()}>
+          {
+            this.state.gamepads.map((item) => {
+              return (
+                <div
+                  key={item.id}
+                >
+                  {item.id}/{item.id}
+                </div>
+              );
+            })
+          }
+        </section>
+      );
     }
 
     render(): React.ReactNode {
-        if (!this.state.gamepads.length) {
-            return null;
-        }
+      if (!this.state.gamepads.length) {
+        return null;
+      }
 
-        return this.renderControls();
+      return this.renderControls();
     }
 }

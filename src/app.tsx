@@ -7,10 +7,10 @@ import {Provider} from 'react-redux';
 import routes from 'routes';
 
 render(
-    (
-        <Provider store={store}>
-            {routes}
-        </Provider>
-    ),
-    document.querySelector('#app'),
+  (
+    <Provider store={store}>
+      {routes}
+    </Provider>
+  ),
+  document.querySelector('#app'),
 );

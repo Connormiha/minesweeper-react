@@ -16,81 +16,81 @@ type PropsType = {
 };
 
 export default class Settings extends React.PureComponent<PropsType> {
-    constructor(props: PropsType) {
-        super(props);
+  constructor(props: PropsType) {
+    super(props);
 
-        bindMethods(this, ['hanldeChangeWidth', 'hanldeChangeHeight', 'hanldeChangeMinesCount', 'handleSubmit']);
-    }
+    bindMethods(this, ['hanldeChangeWidth', 'hanldeChangeHeight', 'hanldeChangeMinesCount', 'handleSubmit']);
+  }
 
-    hanldeChangeWidth(e: React.ChangeEvent<HTMLInputElement>): void {
-        this.props.onChangeFieldWidth(parseInt(e.target.value, 10));
-    }
+  hanldeChangeWidth(e: React.ChangeEvent<HTMLInputElement>): void {
+    this.props.onChangeFieldWidth(parseInt(e.target.value, 10));
+  }
 
-    hanldeChangeHeight(e: React.ChangeEvent<HTMLInputElement>): void {
-        this.props.onChangeFieldHeight(parseInt(e.target.value, 10));
-    }
+  hanldeChangeHeight(e: React.ChangeEvent<HTMLInputElement>): void {
+    this.props.onChangeFieldHeight(parseInt(e.target.value, 10));
+  }
 
-    hanldeChangeMinesCount(e: React.ChangeEvent<HTMLInputElement>): void {
-        this.props.onChangeFieldMinesCount(parseInt(e.target.value, 10));
-    }
+  hanldeChangeMinesCount(e: React.ChangeEvent<HTMLInputElement>): void {
+    this.props.onChangeFieldMinesCount(parseInt(e.target.value, 10));
+  }
 
-    handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
-        const {game: {width, height, minesCount}, onStartGame} = this.props;
+  handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+    const {game: {width, height, minesCount}, onStartGame} = this.props;
 
-        e.preventDefault();
-        onStartGame({width, height, minesCount});
-    }
+    e.preventDefault();
+    onStartGame({width, height, minesCount});
+  }
 
-    render(): React.ReactNode {
-        const {width, height, minesCount} = this.props.game;
+  render(): React.ReactNode {
+    const {width, height, minesCount} = this.props.game;
 
-        return (
-            <form
-                className={b()}
-                onSubmit={this.handleSubmit}
-            >
-                <label className={b('label')}>
-                    <span className={b('label-text')}>
-                        {'Cols'}
-                    </span>
-                    <input
-                        type="number"
-                        min="1"
-                        max="100"
-                        value={width}
-                        onChange={this.hanldeChangeWidth}
-                    />
-                </label>
-                <label className={b('label')}>
-                    <span className={b('label-text')}>
-                        {'Rows'}
-                    </span>
-                    <input
-                        type="number"
-                        min="1"
-                        max="100"
-                        value={height}
-                        onChange={this.hanldeChangeHeight}
-                    />
-                </label>
-                <label className={b('label')}>
-                    <span className={b('label-text')}>
-                        {'Mines count'}
-                    </span>
-                    <input
-                        type="number"
-                        min="1"
-                        max="10000"
-                        value={minesCount}
-                        onChange={this.hanldeChangeMinesCount}
-                    />
-                </label>
+    return (
+      <form
+        className={b()}
+        onSubmit={this.handleSubmit}
+      >
+        <label className={b('label')}>
+          <span className={b('label-text')}>
+            {'Cols'}
+          </span>
+          <input
+            type="number"
+            min="1"
+            max="100"
+            value={width}
+            onChange={this.hanldeChangeWidth}
+          />
+        </label>
+        <label className={b('label')}>
+          <span className={b('label-text')}>
+            {'Rows'}
+          </span>
+          <input
+            type="number"
+            min="1"
+            max="100"
+            value={height}
+            onChange={this.hanldeChangeHeight}
+          />
+        </label>
+        <label className={b('label')}>
+          <span className={b('label-text')}>
+            {'Mines count'}
+          </span>
+          <input
+            type="number"
+            min="1"
+            max="10000"
+            value={minesCount}
+            onChange={this.hanldeChangeMinesCount}
+          />
+        </label>
 
-                <input
-                    type="submit"
-                    value="Apply"
-                />
-            </form>
-        );
-    }
+        <input
+          type="submit"
+          value="Apply"
+        />
+      </form>
+    );
+  }
 }

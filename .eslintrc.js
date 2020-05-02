@@ -22,6 +22,7 @@ module.exports = {
       'jest'
   ],
   rules: {
+      'indent': ['error', 2],
       '@typescript-eslint/interface-name-prefix': ['error', {
           prefixWithI: 'always'
       }],
