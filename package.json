@@ -21,9 +21,9 @@
     "createTypesCss": "node helpers/createStylFlow.js",
     "start": "NODE_ENV=development webpack-dev-server",
     "build:open": "http-server build --gzip -p 8000 -s -c-1",
-    "test": "NODE_ENV=testing jest --no-cache --config jest.json",
+    "test": "NODE_ENV=testing jest",
     "types": "npm run createTypesCss && flow",
-    "upgrade": "yarn upgrade-interactive --ignore-engines --exact --latest",
+    "upgrade": "npm-check --update --save-exact",
     "update-gh": "./helpers/update-gh.sh"
   },
   "devDependencies": {
