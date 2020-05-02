@@ -1,17 +1,22 @@
-'use strict';
-
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const UglifyEsPlugin = require('uglify-es-webpack-plugin');
-const CssoWebpackPlugin = require('csso-webpack-plugin').default;
-const PreloadWebpackPlugin = require('preload-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+import webpack from 'webpack';
+import {Configuration as WebpackDevServerConfiguration} from 'webpack-dev-server';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import path from 'path';
+import ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
+import TerserWebpackPlugin from 'terser-webpack-plugin';
+import CssoWebpackPlugin from 'csso-webpack-plugin';
+// import PreloadWebpackPlugin from 'preload-webpack-plugin';
+import autoprefixer from 'autoprefixer';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const ROOT_URL = process.env.ROOT_URL || '';
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
+const isProduction = NODE_ENV === 'production';
+const nodePath = path.join(__dirname, './node_modules');
 const sourcePath = path.join(__dirname, './src/');
+
+interface IConfiguration extends webpack.Configuration {
+    devServer?: WebpackDevServerConfiguration;
+}
 
 const CONFIG = {
     production: {
@@ -50,23 +55,21 @@ const cssLoaders = [
             modules: {
                 localIdentName: CONFIG.localIdentName,
             },
-        },
-    },
-]
-    .concat(
-        {
-            loader: 'postcss-loader',
-            options: {
-                plugins: [
-                    autoprefixer(),
-                ],
-            },
         }
-    );
+    },
+    {
+        loader: 'postcss-loader',
+        options: {
+            plugins: [
+                autoprefixer()
+            ]
+        }
+    }
+];
 
-let stylusLoaders = cssLoaders.concat('stylus-loader');
+const stylusLoaders = cssLoaders.concat('stylus-loader');
 
-module.exports = {
+const webpackConfig: IConfiguration = {
     entry: {
         app: './src/app.tsx',
     },
@@ -83,29 +86,37 @@ module.exports = {
             'node_modules',
         ],
         //modulesDirectories: [nodePath],
-        extensions: ['.js', '.jsx', '.json', '.flow'],
+        extensions: ['.ts', '.js', '.tsx', '.json'],
         // This is default param
         enforceExtension: false,
     },
-    mode: NODE_ENV,
+    mode: isProduction ? 'production' : 'development',
     optimization: {
         minimizer: [
-            new UglifyEsPlugin({
-                ecma: 8,
-                compress: {
-                    // https://github.com/mishoo/UglifyJS2/pull/2325
-                    unsafe_methods: true,
-                    unsafe_arrows: true,
-                    drop_console: true,
-                    passes: 2,
-                    pure_funcs: ['invariant'],
+            new TerserWebpackPlugin({
+                parallel: false,
+                sourceMap: false,
+                terserOptions: {
+                    ecma: 8,
+                    toplevel: true,
+                    output: {
+                        comments: false,
+                    },
+                    compress: {
+                        // https://github.com/mishoo/UglifyJS2/pull/2325
+                        unsafe_methods: true,
+                        unsafe_arrows: true,
+                        drop_console: true,
+                        passes: 3,
+                        pure_funcs: ['invariant'],
+                    },
                 },
             }),
-            new CssoWebpackPlugin(),
+            new CssoWebpackPlugin() as any,
             // Waiting for support Webpack 4
             // new PreloadWebpackPlugin({
             //     rel: 'preload',
-            //     as(entry) {
+            //     as(entry): string {
             //         if (/\.css$/.test(entry)) return 'style';
             //         if (/\.woff$/.test(entry)) return 'font';
             //         if (/\.(svg|png)$/.test(entry)) return 'image';
@@ -129,6 +140,7 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
+                exclude: [nodePath],
                 sideEffects: false,
                 loader: 'ts-loader',
             },
@@ -196,3 +208,5 @@ module.exports = {
         stats: 'minimal',
     },
 };
+
+export default webpackConfig;

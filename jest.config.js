@@ -1,11 +1,11 @@
 module.exports = {
   moduleFileExtensions: [
     'js',
-    'jsx',
+    'ts',
+    'tsx',
     'json',
     'styl',
-    'css',
-    'flow'
+    'css'
   ],
   transform: {
     '.+\\.(css|styl)$': 'jest-css-modules-transform',

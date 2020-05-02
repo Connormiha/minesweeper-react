@@ -14,7 +14,7 @@ const runStylint = (files = 'src') =>
 if (PRE_COMMIT) {
     let changedFiles = execSync('git diff --cached --name-only --diff-filter=ACM src __tests__', {encoding: 'utf8'});
     changedFiles = changedFiles.split('\n');
-    const changedFilesJavascript = changedFiles.filter((item) => (/\.jsx?$/).test(item));
+    const changedFilesJavascript = changedFiles.filter((item) => (/\.tsx?$/).test(item));
     const changedFilesStylus = changedFiles.filter((item) => (/\.styl$/).test(item));
 
     if (changedFilesJavascript.length) {
