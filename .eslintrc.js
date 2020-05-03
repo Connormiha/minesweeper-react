@@ -26,6 +26,7 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': ['error', {
         prefixWithI: 'always'
     }],
-    'react/display-name': 'off'
+    'react/display-name': 'off',
+    'react/prop-types': 'off'
   }
 };

@@ -1,9 +1,3 @@
-export const bindMethods = (context: Record<string, any>, methods: string[]): void => {
-  for (const method of methods) {
-    context[method] = context[method].bind(context);
-  }
-};
-
 export const getCellNeighbours = (id: number, rowWidth: number, size: number): number[] => {
   const isFirstInRow = id % rowWidth === 0;
   const isLastInRow = id % rowWidth === rowWidth - 1;
