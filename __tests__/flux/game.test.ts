@@ -5,6 +5,7 @@ const STORE_ID = 'game';
 
 let store;
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getState = () =>
   store.getState()[STORE_ID];
 

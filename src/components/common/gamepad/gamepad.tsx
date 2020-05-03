@@ -8,10 +8,10 @@ interface IGamepadState {
     gamepads: Gamepad[];
 }
 
-export default class GamepadComponent extends React.PureComponent<any, IGamepadState> {
-    _handleGamepadConnectedBinded: (e: any) => void;
+export default class GamepadComponent extends React.PureComponent<{}, IGamepadState> {
+    _handleGamepadConnectedBinded: (e: GamepadEvent) => void;
 
-    constructor(props) {
+    constructor(props: {}) {
       super(props);
 
       this._handleGamepadConnectedBinded = this.handleGamepadConnected.bind(this);

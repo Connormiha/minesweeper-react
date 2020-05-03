@@ -46,7 +46,7 @@ export default React.memo<PropsType>((props: PropsType) => {
   const isUnknown = Boolean(cell & IS_UNKNOWN_BIT_FLAG);
   const aroundBombCount = cell >> 4;
 
-  const cssMods: any = {
+  const cssMods: Record<string, boolean | number> = {
     open: isOpened || (isShowBomb && isBomb),
     close: !isOpened && (!isShowBomb || !isBomb),
     bomb: (isOpened || isShowBomb) && isBomb,

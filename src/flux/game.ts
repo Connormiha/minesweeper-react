@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import schema from 'reducers/schema';
 
 import {
@@ -9,25 +10,25 @@ import type {GameType} from 'flux/types';
 const getDefaultState = (): GameType =>
   schema.game;
 
-export const updateWidth = (value: number) =>
+export const updateWidth = (value: number): AnyAction =>
   ({type: GAME_SET_WIDTH, value});
 
-export const updateHeight = (value: number) =>
+export const updateHeight = (value: number): AnyAction =>
   ({type: GAME_SET_HEIGHT, value});
 
-export const updateMinesCount = (value: number) =>
+export const updateMinesCount = (value: number): AnyAction =>
   ({type: GAME_SET_MINES_COUNT, value});
 
-export const start = () =>
+export const start = (): AnyAction =>
   ({type: GAME_START});
 
-export const finish = (isFail: boolean) =>
+export const finish = (isFail: boolean): AnyAction =>
   ({type: GAME_FINISH, isFail});
 
-export const reset = () =>
+export const reset = (): AnyAction =>
   ({type: GAME_RESET});
 
-export default (state: GameType = getDefaultState(), {type, value, isFail}: any) => {
+export default (state: GameType = getDefaultState(), {type, value, isFail}: AnyAction): GameType => {
   switch (type) {
   case GAME_SET_WIDTH:
     return {...state, width: value};

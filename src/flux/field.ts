@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import schema from 'reducers/schema';
 import {
   getCellNeighbours,
@@ -86,19 +87,19 @@ const openCellState = (state: FieldStoreType, id: number): FieldStoreType => {
   };
 };
 
-export const openCell = (id: number) =>
+export const openCell = (id: number): AnyAction =>
   ({type: FIELD_OPEN, id});
 
-export const markCell = (id: number) =>
+export const markCell = (id: number): AnyAction =>
   ({type: FIELD_MARK, id});
 
-export const quickOpen = (id: number) =>
+export const quickOpen = (id: number): AnyAction =>
   ({type: FIELD_QUICK_OPEN, id});
 
-export const fill = (field: FieldFillParams, id: number) =>
+export const fill = (field: FieldFillParams, id: number): AnyAction =>
   ({type: FIELD_FILL, field, id});
 
-export const fillEmpty = (field: FieldFillParams) =>
+export const fillEmpty = (field: FieldFillParams): AnyAction =>
   ({type: FIELD_FILL_EMPTY, field});
 
 const getDefaultState = (): FieldStoreType =>
@@ -114,7 +115,7 @@ type ActionType = {
 type ActionsType = Record<string, (FieldStoreType, ActionType) => FieldStoreType>;
 
 const actions: ActionsType = {
-  [FIELD_FILL](state: FieldStoreType, {field, id}: ActionType): FieldStoreType {
+  [FIELD_FILL](_: FieldStoreType, {field, id}: ActionType): FieldStoreType {
     return {
       ...schema.field,
       isGenerated: true,
@@ -123,7 +124,7 @@ const actions: ActionsType = {
     };
   },
 
-  [FIELD_FILL_EMPTY](state: FieldStoreType, {field}: ActionType) {
+  [FIELD_FILL_EMPTY](_: FieldStoreType, {field}: ActionType) {
     return {
       ...schema.field,
       field: fieldGeneratorEmpty(field.width, field.height),
