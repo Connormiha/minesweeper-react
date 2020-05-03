@@ -9,7 +9,7 @@ module.exports = {
   ],
   transform: {
     '.+\\.(css|styl)$': 'jest-css-modules-transform',
-    '.+\\.tsx?$': 'ts-node'
+    '.+\\.tsx?$': 'ts-jest'
   },
   testRegex: '/__tests__/.*\\.test\\.tsx?$',
   moduleDirectories: [
@@ -21,6 +21,6 @@ module.exports = {
     'src/**/*.{ts,tsx}'
   ],
   setupFiles: [
-    '<rootDir>/__tests__/setup.js'
+    '<rootDir>/__tests__/setup.ts'
   ]
 };
