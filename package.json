@@ -12,8 +12,8 @@
     "url": "git://github.com/Connormiha/minesweeper-react.git"
   },
   "scripts": {
-    "build": "rm -fr build && NODE_ENV=production webpack",
-    "build:gh": "rm -fr build && NODE_ENV=production ROOT_URL=minesweeper-react webpack",
+    "build": "rm -fr build && TS_NODE_PROJECT=\"tsconfig.webpack.json\" NODE_ENV=production webpack",
+    "build:gh": "rm -fr build && TS_NODE_PROJECT=\"tsconfig.webpack.json\" NODE_ENV=production ROOT_URL=minesweeper-react webpack",
     "coverage": "NODE_ENV=testing jest --coverage --config jest.json",
     "lint": "TS_NODE_PROJECT=\"tsconfig.webpack.json\" ts-node lint.ts",
     "precommit": "NODE_ENV=pre_commit npm run types && npm run lint",

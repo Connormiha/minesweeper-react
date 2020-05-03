@@ -94,6 +94,7 @@ const webpackConfig: IConfiguration = {
   optimization: {
     minimizer: [
       new TerserWebpackPlugin({
+        extractComments: false,
         parallel: false,
         sourceMap: false,
         terserOptions: {
@@ -116,8 +117,8 @@ const webpackConfig: IConfiguration = {
           },
         },
       }),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            new CssoWebpackPlugin() as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      new CssoWebpackPlugin() as any,
       // Waiting for support Webpack 4
       // new PreloadWebpackPlugin({
       //     rel: 'preload',
